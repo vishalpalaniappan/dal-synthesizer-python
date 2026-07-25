@@ -11,20 +11,25 @@ def main(argv):
 
     args_parser.add_argument(
         "--ast",
-        required=True,
+        required=False,
         help="Path to ast file"
     )
     
     parsed_args = args_parser.parse_args(argv[1:])
 
-    try:
-        with open(parsed_args.ast, 'r') as f:
-            tree = json.loads(f.read())
-    except Exception as e:
-        print(f"Invalid arguments: {str(e)}", file=sys.stderr)
-        return -1
+    if parsed_args.ast:
+        try:
+            with open(parsed_args.ast, 'r') as f:
+                ast = json.loads(f.read())
+        except Exception as e:
+            print(f"Invalid arguments: {str(e)}", file=sys.stderr)
+            return -1
+        synth = Synthesizer(dalAst=ast, stream=False)
+    else:
+        ast = json.loads(sys.stdin.read())
+        synth = Synthesizer(dalAst=ast, stream=True)
 
-    synth = Synthesizer(tree)
+
     synth.run()
 
 if __name__ == "__main__":

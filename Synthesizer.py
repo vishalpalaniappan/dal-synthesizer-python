@@ -5,8 +5,9 @@ import shutil
 
 class Synthesizer:
     
-    def __init__(self, dalAst):
+    def __init__(self, dalAst, stream):
         self.dalAst = dalAst
+        self.stream = stream
         self.pythonAst = ast.Module(
             body=[],
             type_ignores=[]
@@ -23,7 +24,8 @@ class Synthesizer:
         importNode = ast.parse("from LoggingHelper import semanticLogger").body[0]
         self.pythonAst.body.insert(0, importNode)
 
-        self.writeToOutputFolder()
+        # self.writeToOutputFolder()
+        print(ast.unparse(self.pythonAst))
 
 
     def writeToOutputFolder(self):
