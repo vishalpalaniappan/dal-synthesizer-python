@@ -73,7 +73,9 @@ class Synthesizer:
                 type = dalAstNode['type'] + "," + dalAstNode['command']
             else:
                 type = dalAstNode['type']
-            print(f"Unable to synthesize node of type {type}")
+
+            if not self.stream:
+                print(f"Unable to synthesize node of type {type}")
         else:
             ast.fix_missing_locations(astNodeBody)
             pythonAstNode.body.append(astNodeBody)
