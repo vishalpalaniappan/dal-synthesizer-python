@@ -21,8 +21,12 @@ class Synthesizer:
         for node in self.dalAst["body"]:
             self.processTree(node, self.pythonAst, 0)
 
-        importNode = ast.parse("from LoggingHelper import semanticLogger").body[0]
-        self.pythonAst.body.insert(0, importNode)
+        helper = Path(__file__).parent / "output_helpers" / "LoggingHelper.py"
+        with open(helper,"r") as f:
+            src = f.read()
+
+        loggingAst = ast.parse(src).body
+        self.pythonAst.body.insert(0, loggingAst)
 
         # self.writeToOutputFolder()
         print(ast.unparse(self.pythonAst))
