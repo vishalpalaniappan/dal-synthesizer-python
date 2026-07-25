@@ -1,0 +1,842 @@
+{
+    "type": "root",
+    "body": [
+        {
+            "type": "design",
+            "design_name": [
+                {
+                    "type": "string",
+                    "value": "library_manager"
+                }
+            ]
+        },
+        {
+            "type": "behavior",
+            "behaviorName": "createBasket",
+            "body": [
+                {
+                    "type": "cmd",
+                    "command": "create",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "name=basket"
+                        },
+                        {
+                            "type": "name",
+                            "value": "type=\"list\""
+                        },
+                        {
+                            "type": "name",
+                            "value": "role=\"basket\""
+                        },
+                        {
+                            "type": "name",
+                            "value": "accepts=\"book\""
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "set",
+                    "args": [
+                        {
+                            "type": "string",
+                            "value": "basket"
+                        },
+                        {
+                            "type": "list",
+                            "value": []
+                        },
+                        {
+                            "type": "list",
+                            "value": []
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "set",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "basket"
+                            ]
+                        },
+                        {
+                            "type": "name",
+                            "value": "basket"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "select",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "getChoice"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "behavior",
+            "behaviorName": "getChoice",
+            "body": [
+                {
+                    "type": "cmd",
+                    "command": "getInput",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "choice"
+                        },
+                        {
+                            "type": "string",
+                            "value": "\nGet user choice (a for add book, g for get book, else exit): "
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "log",
+                    "args": [
+                        {
+                            "type": "string",
+                            "value": "getChoice"
+                        },
+                        {
+                            "type": "string",
+                            "value": "choice"
+                        },
+                        {
+                            "type": "string",
+                            "value": "string"
+                        },
+                        {
+                            "type": "name",
+                            "value": "choice"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "isEqual",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "choice"
+                        },
+                        {
+                            "type": "string",
+                            "value": "a"
+                        },
+                        {
+                            "type": "name",
+                            "value": "isAdd"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "isEqual",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "choice"
+                        },
+                        {
+                            "type": "string",
+                            "value": "g"
+                        },
+                        {
+                            "type": "name",
+                            "value": "isGet"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "set",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "choice"
+                            ]
+                        },
+                        {
+                            "type": "name",
+                            "value": "choice"
+                        }
+                    ]
+                },
+                {
+                    "type": "if",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "isAdd"
+                        }
+                    ],
+                    "body": [
+                        {
+                            "type": "cmd",
+                            "command": "select",
+                            "args": [
+                                {
+                                    "type": "name",
+                                    "value": "getName"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "if",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "isGet"
+                        }
+                    ],
+                    "body": [
+                        {
+                            "type": "cmd",
+                            "command": "select",
+                            "args": [
+                                {
+                                    "type": "name",
+                                    "value": "getBookFromBasket"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "behavior",
+            "behaviorName": "getBookFromBasket",
+            "body": [
+                {
+                    "type": "cmd",
+                    "command": "get",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "basket"
+                        },
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "basket"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "removeFromPos",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "book"
+                        },
+                        {
+                            "type": "name",
+                            "value": "basket"
+                        },
+                        {
+                            "type": "number",
+                            "value": 0
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "set",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "book"
+                            ]
+                        },
+                        {
+                            "type": "name",
+                            "value": "book"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "select",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "getFirstLetterOfBookName"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "behavior",
+            "behaviorName": "getFirstLetterOfBookName",
+            "body": [
+                {
+                    "type": "cmd",
+                    "command": "get",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "book"
+                        },
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "book"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "get",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "name"
+                        },
+                        {
+                            "type": "name",
+                            "value": "book"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "name"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "getFromPos",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "firstLetter"
+                        },
+                        {
+                            "type": "name",
+                            "value": "name"
+                        },
+                        {
+                            "type": "number",
+                            "value": 0
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "display",
+                    "args": [
+                        {
+                            "type": "string",
+                            "value": "f'Got book named {name} and it has first letter {firstLetter}'"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "set",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "firstLetter"
+                            ]
+                        },
+                        {
+                            "type": "name",
+                            "value": "firstLetter"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "select",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "getChoice"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "behavior",
+            "behaviorName": "displayChoice",
+            "body": [
+                {
+                    "type": "cmd",
+                    "command": "get",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "choice"
+                        },
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "choice"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "display",
+                    "args": [
+                        {
+                            "type": "string",
+                            "value": "f'User Choice: {choice}'"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "select",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "getChoice"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "behavior",
+            "behaviorName": "getName",
+            "body": [
+                {
+                    "type": "cmd",
+                    "command": "create",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "name=name"
+                        },
+                        {
+                            "type": "name",
+                            "value": "type=\"string\""
+                        },
+                        {
+                            "type": "name",
+                            "value": "role=\"name\""
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "getInput",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "name"
+                        },
+                        {
+                            "type": "string",
+                            "value": "\nPlease enter book name: "
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "log",
+                    "args": [
+                        {
+                            "type": "string",
+                            "value": "getName"
+                        },
+                        {
+                            "type": "string",
+                            "value": "name"
+                        },
+                        {
+                            "type": "string",
+                            "value": "string"
+                        },
+                        {
+                            "type": "name",
+                            "value": "name"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "set",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "name"
+                            ]
+                        },
+                        {
+                            "type": "name",
+                            "value": "name"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "select",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "createBook"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "behavior",
+            "behaviorName": "createBook",
+            "body": [
+                {
+                    "type": "cmd",
+                    "command": "get",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "name"
+                        },
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "name"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "create",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "name=book"
+                        },
+                        {
+                            "type": "name",
+                            "value": "type=\"object\""
+                        },
+                        {
+                            "type": "name",
+                            "value": "role=\"book\""
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "set",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "book"
+                        },
+                        {
+                            "type": "list",
+                            "value": []
+                        },
+                        {
+                            "type": "object",
+                            "value": {}
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "set",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "book"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "name"
+                            ]
+                        },
+                        {
+                            "type": "name",
+                            "value": "name"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "set",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "book"
+                            ]
+                        },
+                        {
+                            "type": "name",
+                            "value": "book"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "remove",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "name"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "select",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "addBookToBasket"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "behavior",
+            "behaviorName": "addBookToBasket",
+            "body": [
+                {
+                    "type": "cmd",
+                    "command": "get",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "book"
+                        },
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "book"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "get",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "basket"
+                        },
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "basket"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "insert",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "basket"
+                        },
+                        {
+                            "type": "list",
+                            "value": []
+                        },
+                        {
+                            "type": "name",
+                            "value": "book"
+                        },
+                        {
+                            "type": "number",
+                            "value": 0
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "set",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "basket"
+                            ]
+                        },
+                        {
+                            "type": "name",
+                            "value": "basket"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "remove",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "book"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "select",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "showBasket"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "behavior",
+            "behaviorName": "showBasket",
+            "body": [
+                {
+                    "type": "cmd",
+                    "command": "get",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "basket"
+                        },
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "basket"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "display",
+                    "args": [
+                        {
+                            "type": "string",
+                            "value": "f'Basket Contents: {basket}'"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "select",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "getChoice"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "cmd",
+            "command": "run",
+            "args": [
+                {
+                    "type": "name",
+                    "value": "createBasket"
+                }
+            ]
+        }
+    ]
+}
