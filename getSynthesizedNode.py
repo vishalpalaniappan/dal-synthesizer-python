@@ -51,6 +51,19 @@ def getBehaviorAst(node):
         def <behaviorName>():
             global worldState
     '''
+    logBehavior = ast.Expr(
+        value=ast.Call(
+            func=ast.Attribute(
+                value=ast.Name(id="semanticLogger", ctx=ast.Load()),
+                attr="logBehavior",
+                ctx=ast.Load(),
+            ),
+            args=[
+                ast.Constant(value=node["behaviorName"]),
+            ],
+            keywords=[],
+        )
+    )
     return ast.FunctionDef(
         name=node["behaviorName"],
         args=ast.arguments(
@@ -63,6 +76,7 @@ def getBehaviorAst(node):
             kwarg=None
         ),
         body=[
+            logBehavior,
             ast.Global(
                 names=["worldState"]
             )
