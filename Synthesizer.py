@@ -2,28 +2,10 @@ import ast
 import os
 import io
 import sys
+import json
 from pathlib import Path
 from getSynthesizedNode import getSynthesizedNode
 import shutil
-import zipfile
-
-def zip_folder_in_memory(folder_path: str):
-    '''
-        Zips the contents of a folder in memory so that
-        it can be streamed to the client without having to
-        write the zip file to disk.
-    '''
-    buffer = io.BytesIO()
-
-    with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zf:
-        for root, _, files in os.walk(folder_path):
-            for file_name in files:
-                full_path = os.path.join(root, file_name)
-                rel_path = os.path.relpath(full_path, folder_path)
-                zf.write(full_path, rel_path)
-
-    buffer.seek(0)
-    return buffer
 
 class Synthesizer:
     
@@ -46,21 +28,23 @@ class Synthesizer:
         importNode = ast.parse("from LoggingHelper import semanticLogger").body[0]
         self.pythonAst.body.insert(0, importNode)
 
-        self.writeToOutputFolder()
+        synthSrc = ast.unparse(self.pythonAst)
+
+        self.writeToOutputFolder(synthSrc)
 
         if self.stream:
-            # Stream output
-            output_folder = Path(__file__).parent / "output"
-            buffer = zip_folder_in_memory(output_folder)
-            while True:
-                chunk = buffer.read(4096)
-                if not chunk:
-                    break
-                sys.stdout.buffer.write(chunk)
-                sys.stdout.buffer.flush()
+            helper = Path(__file__).parent / "output_helpers" / "LoggingHelper.py"
+            with open(helper,"r") as f:
+                src = f.read()
+
+            metadata = {
+                "LoggingHelper.py": src,
+                "synthesized.py": synthSrc
+            }
+            sys.stdout.buffer.write(json.dumps(metadata).encode("utf-8"))
 
 
-    def writeToOutputFolder(self):
+    def writeToOutputFolder(self, synthSrc):
         '''
             Writes the synthesized output to output folder and
             also adds the logging helper.
@@ -82,7 +66,7 @@ class Synthesizer:
         # Write the synthesized output
         outputFile = Path(__file__).parent / "output" / "synthesized.py"
         with open(outputFile,"w+") as f:
-            f.write(ast.unparse(self.pythonAst))
+            f.write(synthSrc)
 
         # Copyt logging helper
         src = Path(__file__).parent / "output_helpers" / "LoggingHelper.py"

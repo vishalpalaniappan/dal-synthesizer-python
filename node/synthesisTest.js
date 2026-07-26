@@ -11,9 +11,8 @@ const testStreamMode = async (pathToAst, behavior) => {
 
     try {
         const synthesizedOutput = await synthesisRunner(data, true);
-        console.log("Synthesizer output:", synthesizedOutput);
-        const directory = await unzipper.Open.buffer(synthesizedOutput);
-        await directory.extract({ path: "./node/output" });
+        const output = JSON.parse(synthesizedOutput);
+        console.log("Synthesizer output:", output);
     } catch (err) {
         console.error("Error during synthesis execution:");
         console.error(err);
