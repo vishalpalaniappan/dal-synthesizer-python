@@ -37,7 +37,7 @@ getInput(<participant>,<prompt>)
 
 Likewise, the other blocks and commands are synthesized into the implementation that realizes their meaning. You can find these AST nodes in the  [`commands.json`](docs/commands.json) file. 
 
-The synthesizer itself traverses the AST and builds the synthesized implementation. It is a very simple program since it is just realizing the design as an implementation that reaizes its meaning.
+The synthesizer itself traverses the AST and builds the synthesized implementation. It is a very simple program since it is just realizing the design as an implementation that realizes its meaning.
 
 ## Python Usage
 ```bash
