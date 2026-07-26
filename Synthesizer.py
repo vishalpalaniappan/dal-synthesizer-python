@@ -30,8 +30,6 @@ class Synthesizer:
 
         synthSrc = ast.unparse(self.pythonAst)
 
-        self.writeToOutputFolder(synthSrc)
-
         if self.stream:
             helper = Path(__file__).parent / "output_helpers" / "LoggingHelper.py"
             with open(helper,"r") as f:
@@ -42,6 +40,8 @@ class Synthesizer:
                 "synthesized.py": synthSrc
             }
             sys.stdout.buffer.write(json.dumps(metadata).encode("utf-8"))
+        else:
+            self.writeToOutputFolder(synthSrc)
 
 
     def writeToOutputFolder(self, synthSrc):
