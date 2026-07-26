@@ -10,7 +10,7 @@ const testStreamMode = async (pathToAst, behavior) => {
     const data = await fs.readFile(pathToAst);
 
     try {
-        const synthesizedOutput = await synthesisRunner(data, true);
+        const synthesizedOutput = await synthesisRunner(data);
         const output = JSON.parse(synthesizedOutput);
         console.log("Synthesizer output:", output);
     } catch (err) {
