@@ -1,9 +1,13 @@
 import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const SYNTHESIZER_PATH = path.resolve(__dirname, "../dal_ast_synthesizer.py");
 
 function synthesisRunner(synthPackage, args = []) {
     return new Promise((resolve, reject) => {
-        const process = spawn("python3", ["dal_ast_synthesizer.py"]);
+        const process = spawn("python3", [SYNTHESIZER_PATH]);
                 let settled = false;
 
         const stdoutChunks = [];
