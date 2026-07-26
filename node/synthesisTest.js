@@ -3,13 +3,17 @@ import synthesisRunner from "./synthesisRunner.js"
 import fs from 'fs/promises';
 import { writeFile } from "node:fs/promises";
 import { json } from 'stream/consumers';
+import unzipper from "unzipper";
+
 
 const testStreamMode = async (pathToAst, behavior) => {    
     const data = await fs.readFile(pathToAst);
 
     try {
         const synthesizedOutput = await synthesisRunner(data, true);
-        console.log("Synthesis output:", synthesizedOutput.toString());
+        console.log("Synthesizer output:", synthesizedOutput);
+        const directory = await unzipper.Open.buffer(synthesizedOutput);
+        await directory.extract({ path: "./node/output" });
     } catch (err) {
         console.error("Error during synthesis execution:");
         console.error(err);
