@@ -28,8 +28,10 @@ class Synthesizer:
         loggingAst = ast.parse(src).body
         self.pythonAst.body.insert(0, loggingAst)
 
-        # self.writeToOutputFolder()
-        print(ast.unparse(self.pythonAst))
+        if self.stream:
+            print(ast.unparse(self.pythonAst))
+        else:
+            self.writeToOutputFolder()
 
 
     def writeToOutputFolder(self):
