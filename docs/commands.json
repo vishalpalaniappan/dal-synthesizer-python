@@ -47,7 +47,7 @@
     "removeFromPos": {
         "description": "Removes the value at pos from source and saves it in target.",
         "syntax": "getFromPos(<target>, <source>, <pos>)",
-        "synthesized": "<target> = <source>.pop(<pos>"
+        "synthesized": "<target> = <source>.pop(<pos>)"
     },
     "run": {
         "description": "Synthesizes the block which runs the desig.",
