@@ -11,13 +11,52 @@ def getSynthesizedNode(node):
     type = node["type"]
     if (type == "cmd"):
         cmd = node["command"]
-        funcName = f"getCmd{cmd[0].upper() +cmd[1:]}Ast"
+        if cmd[0] == "_":
+            funcName = F"getRegisteredCall"
+        else:
+            funcName = f"getCmd{cmd[0].upper() +cmd[1:]}Ast"
     else:
         funcName = f"get{type[0].upper() +type[1:]}Ast"
 
     if (funcName in globals()):
         return globals()[funcName](node)
 
+def getRegisteredCall(node):
+    '''
+        Invokes a custom opaque transformation and stores the result in store_name.
+        If store name is null, it simply calls the transformtion.
+
+        _customCall(<store_name>, <arg1>, <arg2>, <arg3>)
+        <store_name> = customCall(<arg1>, <arg2>, <arg3>)
+
+        _customCall(null, <arg1>, <arg2>, <arg3>)
+        customCall(<arg1>, <arg2>, <arg3>)
+    '''
+
+    # Create the call node
+    argsAsType = []
+    for arg in node["args"][1:]:
+        if (arg["type"] == "name"):
+            argsAsType.append(ast.Name(id=arg["value"], ctx=ast.Load()))
+        else:
+            argsAsType.append(ast.Constant(value=arg["value"]))
+    
+    callNode = ast.Call(
+        func=ast.Name(id=node["command"][1:], ctx=ast.Load()),
+        args=argsAsType,
+        keywords=[]
+    )
+
+    # Create the AST output
+    if node["args"][0]["type"] == "null":
+        return ast.Expr(value=callNode)
+    else:
+        return ast.Assign(
+            targets=[ast.Name(id=node["args"][0]["value"], ctx=ast.Store())],
+            value=callNode
+        )
+
+        
 def getCmdLogAst(node):
     '''
         log(<behavior>, <name>, <type>, <value>)

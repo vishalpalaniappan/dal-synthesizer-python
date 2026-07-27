@@ -1,85 +1,59 @@
 from LoggingHelper import semanticLogger
-design = 'library_manager'
+design = 'reverse_name_persist'
 
-def createBasket():
-    semanticLogger.logBehavior('createBasket')
+def b_createDatabaseConnection():
+    semanticLogger.logBehavior('b_createDatabaseConnection')
     global worldState
-    basket = []
-    worldState['basket'] = basket
-    return 'getChoice'
+    connection = connectToDatabase()
+    worldState['connection'] = connection
+    return 'b_createCursor'
 
-def getChoice():
-    semanticLogger.logBehavior('getChoice')
+def b_createCursor():
+    semanticLogger.logBehavior('b_createCursor')
     global worldState
-    choice = input('\nGet user choice (a for add book, g for get book, else exit): ')
-    semanticLogger.logParticipant('getChoice', 'choice', 'string', choice)
-    isAdd = choice == 'a'
-    isGet = choice == 'g'
-    worldState['choice'] = choice
-    if isAdd:
-        return 'getName'
-    if isGet:
-        return 'getBookFromBasket'
+    connection = worldState['connection']
+    cursor = createCursor(connection)
+    worldState['cursor'] = cursor
+    return 'b_createTable'
 
-def getBookFromBasket():
-    semanticLogger.logBehavior('getBookFromBasket')
+def b_createTable():
+    semanticLogger.logBehavior('b_createTable')
     global worldState
-    basket = worldState['basket']
-    book = basket.pop(0)
-    worldState['book'] = book
-    return 'getFirstLetterOfBookName'
+    cursor = worldState['cursor']
+    createTable(cursor)
+    return 'b_commitConnection'
 
-def getFirstLetterOfBookName():
-    semanticLogger.logBehavior('getFirstLetterOfBookName')
+def b_commitConnection():
+    semanticLogger.logBehavior('b_commitConnection')
     global worldState
-    book = worldState['book']
-    name = book['name']
-    firstLetter = name[0]
-    print(f'Got book named {name} and it has first letter {firstLetter}')
-    worldState['firstLetter'] = firstLetter
-    return 'getChoice'
+    connection = worldState['connection']
+    commitConnection(connection)
+    return 'b_receiveName'
 
-def displayChoice():
-    semanticLogger.logBehavior('displayChoice')
+def b_receiveName():
+    semanticLogger.logBehavior('b_receiveName')
     global worldState
-    choice = worldState['choice']
-    print(f'User Choice: {choice}')
-    return 'getChoice'
-
-def getName():
-    semanticLogger.logBehavior('getName')
-    global worldState
-    name = input('\nPlease enter book name: ')
-    semanticLogger.logParticipant('getName', 'name', 'string', name)
+    name = receiveName()
     worldState['name'] = name
-    return 'createBook'
+    return 'b_reverse'
 
-def createBook():
-    semanticLogger.logBehavior('createBook')
+def b_reverse():
+    semanticLogger.logBehavior('b_reverse')
     global worldState
     name = worldState['name']
-    book = {}
-    book['name'] = name
-    worldState['book'] = book
-    return 'addBookToBasket'
+    reversedName = reverse(name)
+    worldState['reversedName'] = reversedName
+    return 'b_writeToDatabase'
 
-def addBookToBasket():
-    semanticLogger.logBehavior('addBookToBasket')
+def b_writeToDatabase():
+    semanticLogger.logBehavior('b_writeToDatabase')
     global worldState
-    book = worldState['book']
-    basket = worldState['basket']
-    basket.insert(0, book)
-    worldState['basket'] = basket
-    return 'showBasket'
-
-def showBasket():
-    semanticLogger.logBehavior('showBasket')
-    global worldState
-    basket = worldState['basket']
-    print(f'Basket Contents: {basket}')
-    return 'getChoice'
+    cursor = worldState['cursor']
+    reversedName = worldState['reversedName']
+    writeToDatabase(cursor, reversedName)
+    return 'b_commitConnection'
 if __name__ == '__main__':
-    nextBehavior = 'createBasket'
+    nextBehavior = 'b_createDatabaseConnection'
     worldState = {}
     while nextBehavior:
         nextBehavior = globals()[nextBehavior]()
