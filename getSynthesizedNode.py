@@ -7,14 +7,14 @@ def getSynthesizedNode(node):
 
         DAL Identifiers: get<Identifier>Ast
         Commands: getCmd<CommandName>Ast
+        Registered: getRegisteredCall
     '''
     type = node["type"]
     if (type == "cmd"):
         cmd = node["command"]
-        if cmd[0] == "_":
-            funcName = F"getRegisteredCall"
-        else:
-            funcName = f"getCmd{cmd[0].upper() +cmd[1:]}Ast"
+        funcName = f"getCmd{cmd[0].upper() + cmd[1:]}Ast"
+    elif (type == "registeredCmd"):
+        funcName = f"getRegisteredCall"
     else:
         funcName = f"get{type[0].upper() +type[1:]}Ast"
 

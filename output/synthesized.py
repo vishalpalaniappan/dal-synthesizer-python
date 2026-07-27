@@ -1,3 +1,4 @@
+from registered import *
 from LoggingHelper import semanticLogger
 design = 'reverse_name_persist'
 
