@@ -28,6 +28,9 @@ class Synthesizer:
         importNode = ast.parse("from LoggingHelper import semanticLogger").body[0]
         self.pythonAst.body.insert(0, importNode)
 
+        importNode = ast.parse("from registered import *").body[0]
+        self.pythonAst.body.insert(0, importNode)
+
         synthSrc = ast.unparse(self.pythonAst)
 
         if self.stream:
