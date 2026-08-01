@@ -119,17 +119,17 @@ def getCmdLogAst(node):
     )
 
         
-def getCmdWorldStateAst(node):
+def getCmdWorldStateManagerAst(node):
     '''
         Command structure:
-        worldState(<cmd>, <arg>)
+        worldStateManager(<cmd>, <arg>)
 
         Usage Example:
-        worldState(null, "add", "bucket", [])
-        worldState.add(bucket, [])
+        worldStateManager(null, "add", "bucket", [])
+        worldStateManager.add(bucket, [])
 
-        worldState(uid, "getUid", "bucket")
-        uid = worldState.getUid("bucket")
+        worldStateManager(uid, "getUid", "bucket")
+        uid = worldStateManager.getUid("bucket")
     '''
     cmd = node["args"][1]["value"]
 
@@ -143,7 +143,7 @@ def getCmdWorldStateAst(node):
 
     call = ast.Call(
         func=ast.Attribute(
-            value=ast.Name(id="worldState", ctx=ast.Load()),
+            value=ast.Name(id="worldStateManager", ctx=ast.Load()),
             attr=cmd,
             ctx=ast.Load(),
         ),

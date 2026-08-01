@@ -35,20 +35,4 @@ class WorldState:
         self.worldState[name]["value"] = value
 
 
-worldState = WorldState()
-
-
-if __name__ == "__main__":
-    worldState.add("bucket", [])
-    print(worldState.get("bucket"))
-    print(worldState.getUid("bucket"))
-    print(worldState.getValue("bucket"))
-
-
-    '''
-        worldState(<cmd>, <arg>)
-
-        worldState("add", "bucket", [])
-
-        worldState("getUid", "bucket")
-    '''
+worldStateManager = WorldState()
