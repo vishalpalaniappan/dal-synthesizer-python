@@ -19,14 +19,20 @@ class WorldState:
                 "uid": str(uuid.uuid4())
             }
 
-    def remove(self):
-        pass
+    def remove(self, name):
+        del self.worldState[name]
 
     def get(self, name):
         return self.worldState[name]
 
-    def update(self):
-        pass
+    def getValue(self, name):
+        return self.worldState[name]["value"]
+
+    def getUid(self, name):
+        return self.worldState[name]["uid"]
+
+    def update(self, name, value):
+        self.worldState[name]["value"] = value
 
 
 worldState = WorldState()
@@ -35,3 +41,14 @@ worldState = WorldState()
 if __name__ == "__main__":
     worldState.add("bucket", [])
     print(worldState.get("bucket"))
+    print(worldState.getUid("bucket"))
+    print(worldState.getValue("bucket"))
+
+
+    '''
+        worldState(<cmd>, <arg>)
+
+        worldState("add", "bucket", [])
+
+        worldState("getUid", "bucket")
+    '''
