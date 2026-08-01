@@ -8,16 +8,30 @@ class WorldState:
     '''
 
     def __init__(self):
-        pass
+        self.worldState = {}
 
-    def add(self):
-        pass
+    def add(self, name, value):
+        if name in self.worldState:
+            self.worldState[name]["value"] = value
+        else:
+            self.worldState[name] = {
+                "value": value,
+                "uid": str(uuid.uuid4())
+            }
 
     def remove(self):
         pass
 
-    def get(self):
-        pass
+    def get(self, name):
+        return self.worldState[name]
 
     def update(self):
         pass
+
+
+worldState = WorldState()
+
+
+if __name__ == "__main__":
+    worldState.add("bucket", [])
+    print(worldState.get("bucket"))
