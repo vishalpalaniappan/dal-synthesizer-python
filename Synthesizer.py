@@ -39,11 +39,16 @@ class Synthesizer:
         if self.stream:
             helper = Path(__file__).parent / "output_helpers" / "LoggingHelper.py"
             with open(helper,"r") as f:
-                src = f.read()
+                srcLoggingHelper = f.read()
+
+            helper = Path(__file__).parent / "output_helpers" / "WorldState.py"
+            with open(helper,"r") as f:
+                srcWorldState = f.read()
 
             metadata = {
-                "LoggingHelper.py": src,
-                "synthesized.py": synthSrc
+                "LoggingHelper.py": srcLoggingHelper,
+                "synthesized.py": synthSrc,
+                "WorldState.py": srcWorldState
             }
             sys.stdout.buffer.write(json.dumps(metadata).encode("utf-8"))
         else:
