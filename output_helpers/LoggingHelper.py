@@ -42,7 +42,7 @@ class LoggingHelper:
 
     def logInvariantViolation(self, behaviorId, invariantName):
         entry = {}
-        entry["type"] = "invariant"
+        entry["type"] = "invariantViolation"
         entry["behaviorName"] = behaviorId
         entry["invariantName"] = invariantName
         logger.info(entry)
