@@ -77,67 +77,9 @@
                     ]
                 },
                 {
-                    "type": "cmd",
-                    "command": "log",
-                    "args": [
-                        {
-                            "type": "string",
-                            "value": "invariant"
-                        },
-                        {
-                            "type": "string",
-                            "value": "getName"
-                        },
-                        {
-                            "type": "string",
-                            "value": "name_length"
-                        },
-                        {
-                            "type": "string",
-                            "value": "name"
-                        }
-                    ]
-                },
-                {
-                    "type": "cmd",
-                    "command": "getLength",
-                    "args": [
-                        {
-                            "type": "name",
-                            "value": "inv_nameLength"
-                        },
-                        {
-                            "type": "name",
-                            "value": "name"
-                        }
-                    ]
-                },
-                {
-                    "type": "cmd",
-                    "command": "isGreaterThan",
-                    "args": [
-                        {
-                            "type": "name",
-                            "value": "inv_isValid"
-                        },
-                        {
-                            "type": "name",
-                            "value": "inv_nameLength"
-                        },
-                        {
-                            "type": "number",
-                            "value": 0
-                        }
-                    ]
-                },
-                {
-                    "type": "if",
-                    "args": [
-                        {
-                            "type": "name",
-                            "value": "inv_isValid"
-                        }
-                    ],
+                    "type": "invariant",
+                    "invariantName": "name_length",
+                    "args": [],
                     "body": [
                         {
                             "type": "cmd",
@@ -145,7 +87,7 @@
                             "args": [
                                 {
                                     "type": "string",
-                                    "value": "invariantViolation"
+                                    "value": "invariant"
                                 },
                                 {
                                     "type": "string",
@@ -154,6 +96,71 @@
                                 {
                                     "type": "string",
                                     "value": "name_length"
+                                },
+                                {
+                                    "type": "string",
+                                    "value": "name"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "cmd",
+                            "command": "getLength",
+                            "args": [
+                                {
+                                    "type": "name",
+                                    "value": "inv_nameLength"
+                                },
+                                {
+                                    "type": "name",
+                                    "value": "name"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "cmd",
+                            "command": "isGreaterThan",
+                            "args": [
+                                {
+                                    "type": "name",
+                                    "value": "inv_isValid"
+                                },
+                                {
+                                    "type": "name",
+                                    "value": "inv_nameLength"
+                                },
+                                {
+                                    "type": "number",
+                                    "value": 0
+                                }
+                            ]
+                        },
+                        {
+                            "type": "if",
+                            "args": [
+                                {
+                                    "type": "name",
+                                    "value": "inv_isValid"
+                                }
+                            ],
+                            "body": [
+                                {
+                                    "type": "cmd",
+                                    "command": "log",
+                                    "args": [
+                                        {
+                                            "type": "string",
+                                            "value": "invariantViolation"
+                                        },
+                                        {
+                                            "type": "string",
+                                            "value": "getName"
+                                        },
+                                        {
+                                            "type": "string",
+                                            "value": "name_length"
+                                        }
+                                    ]
                                 }
                             ]
                         }

@@ -32,4 +32,19 @@ class LoggingHelper:
         entry["behaviorName"] = behaviorId
         logger.info(entry)
 
+    def logInvariant(self, behaviorId, invariantName, invartiantParticipant):
+        entry = {}
+        entry["type"] = "invariant"
+        entry["behaviorName"] = behaviorId
+        entry["invariantName"] = invariantName
+        entry["invariantParticipant"] = invartiantParticipant
+        logger.info(entry)
+
+    def logInvariantViolation(self, behaviorId, invariantName):
+        entry = {}
+        entry["type"] = "invariantViolation"
+        entry["behaviorName"] = behaviorId
+        entry["invariantName"] = invariantName
+        logger.info(entry)
+
 semanticLogger = LoggingHelper()

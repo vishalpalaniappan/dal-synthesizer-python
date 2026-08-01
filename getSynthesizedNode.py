@@ -174,6 +174,23 @@ def getWhileAst(node):
         orelse=[]
     )
 
+def getInvariantAst(node):
+    '''
+        I am synthesizing the invariant block as an
+        if statement that always evaluates to true.
+
+        TODO: Improve this by rendering contents of
+        invariant block without the if statement.
+        
+        if True:
+            <body>
+    '''
+    return ast.If(
+        test=ast.Constant(value=True),
+        body=[],
+        orelse=[],
+    )
+
 def getIfAst(node):
     '''
         if <condition>:

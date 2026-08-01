@@ -1,60 +1,34 @@
 from registered import *
 from LoggingHelper import semanticLogger
-design = 'reverse_name_persist'
+design = 'simple_invariant_test'
 
-def b_createDatabaseConnection():
-    semanticLogger.logBehavior('b_createDatabaseConnection')
+def addNewLineToDisplay():
+    semanticLogger.logBehavior('addNewLineToDisplay')
     global worldState
-    connection = connectToDatabase()
-    worldState['connection'] = connection
-    return 'b_createCursor'
+    print(f'')
+    return 'getName'
 
-def b_createCursor():
-    semanticLogger.logBehavior('b_createCursor')
+def getName():
+    semanticLogger.logBehavior('getName')
     global worldState
-    connection = worldState['connection']
-    cursor = createCursor(connection)
-    worldState['cursor'] = cursor
-    return 'b_createTable'
-
-def b_createTable():
-    semanticLogger.logBehavior('b_createTable')
-    global worldState
-    cursor = worldState['cursor']
-    createTable(cursor)
-    return 'b_commitConnection'
-
-def b_commitConnection():
-    semanticLogger.logBehavior('b_commitConnection')
-    global worldState
-    connection = worldState['connection']
-    commitConnection(connection)
-    return 'b_receiveName'
-
-def b_receiveName():
-    semanticLogger.logBehavior('b_receiveName')
-    global worldState
-    name = receiveName()
+    name = input('Provide Name: ')
+    if True:
+        semanticLogger.logInvariant('getName', 'name_length', 'name')
+        if inv_isValid:
+            semanticLogger.logInvariantViolation('getName', 'name_length')
     worldState['name'] = name
-    return 'b_reverse'
+    return 'getFirstLetterOfName'
 
-def b_reverse():
-    semanticLogger.logBehavior('b_reverse')
+def getFirstLetterOfName():
+    semanticLogger.logBehavior('getFirstLetterOfName')
     global worldState
     name = worldState['name']
-    reversedName = reverse(name)
-    worldState['reversedName'] = reversedName
-    return 'b_writeToDatabase'
-
-def b_writeToDatabase():
-    semanticLogger.logBehavior('b_writeToDatabase')
-    global worldState
-    cursor = worldState['cursor']
-    reversedName = worldState['reversedName']
-    writeToDatabase(cursor, reversedName)
-    return 'b_commitConnection'
+    firstLetter = name[0]
+    print(f'First Letter: {firstLetter}')
+    worldState['firstLetter'] = firstLetter
+    return 'addNewLineToDisplay'
 if __name__ == '__main__':
-    nextBehavior = 'b_createDatabaseConnection'
+    nextBehavior = 'addNewLineToDisplay'
     worldState = {}
     while nextBehavior:
         nextBehavior = globals()[nextBehavior]()
