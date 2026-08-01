@@ -152,7 +152,7 @@ def getCmdWorldStateAst(node):
     )
 
     if (node["args"][0]["type"] == "null"):
-        return call
+        return ast.Expr(value=call)
     else:
         return ast.Assign(
             targets=[
