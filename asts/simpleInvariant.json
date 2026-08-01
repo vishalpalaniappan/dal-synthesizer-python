@@ -1,0 +1,311 @@
+{
+    "type": "root",
+    "body": [
+        {
+            "type": "design",
+            "design_name": [
+                {
+                    "type": "string",
+                    "value": "simple_invariant_test"
+                }
+            ]
+        },
+        {
+            "type": "behavior",
+            "behaviorName": "addNewLineToDisplay",
+            "body": [
+                {
+                    "type": "cmd",
+                    "command": "display",
+                    "args": [
+                        {
+                            "type": "string",
+                            "value": "f''"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "select",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "getName"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "behavior",
+            "behaviorName": "getName",
+            "body": [
+                {
+                    "type": "cmd",
+                    "command": "create",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "name=name"
+                        },
+                        {
+                            "type": "name",
+                            "value": "type=\"string\""
+                        },
+                        {
+                            "type": "name",
+                            "value": "role=\"name\""
+                        },
+                        {
+                            "type": "name",
+                            "value": "description=\"Any name\""
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "getInput",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "name"
+                        },
+                        {
+                            "type": "string",
+                            "value": "Provide Name: "
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "log",
+                    "args": [
+                        {
+                            "type": "string",
+                            "value": "invariant"
+                        },
+                        {
+                            "type": "string",
+                            "value": "getName"
+                        },
+                        {
+                            "type": "string",
+                            "value": "name_length"
+                        },
+                        {
+                            "type": "string",
+                            "value": "name"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "getLength",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "inv_nameLength"
+                        },
+                        {
+                            "type": "name",
+                            "value": "name"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "isGreaterThan",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "inv_isValid"
+                        },
+                        {
+                            "type": "name",
+                            "value": "inv_nameLength"
+                        },
+                        {
+                            "type": "number",
+                            "value": 0
+                        }
+                    ]
+                },
+                {
+                    "type": "if",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "inv_isValid"
+                        }
+                    ],
+                    "body": [
+                        {
+                            "type": "cmd",
+                            "command": "log",
+                            "args": [
+                                {
+                                    "type": "string",
+                                    "value": "invariantViolation"
+                                },
+                                {
+                                    "type": "string",
+                                    "value": "getName"
+                                },
+                                {
+                                    "type": "string",
+                                    "value": "name_length"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "set",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "name"
+                            ]
+                        },
+                        {
+                            "type": "name",
+                            "value": "name"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "select",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "getFirstLetterOfName"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "behavior",
+            "behaviorName": "getFirstLetterOfName",
+            "body": [
+                {
+                    "type": "cmd",
+                    "command": "create",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "name=firstLetter"
+                        },
+                        {
+                            "type": "name",
+                            "value": "type=\"string\""
+                        },
+                        {
+                            "type": "name",
+                            "value": "role=\"firstLetter\""
+                        },
+                        {
+                            "type": "name",
+                            "value": "description=\"First letter of a name.\""
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "get",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "name"
+                        },
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "name"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "getFromPos",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "firstLetter"
+                        },
+                        {
+                            "type": "name",
+                            "value": "name"
+                        },
+                        {
+                            "type": "number",
+                            "value": 0
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "display",
+                    "args": [
+                        {
+                            "type": "string",
+                            "value": "f'First Letter: {firstLetter}'"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "set",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "worldState"
+                        },
+                        {
+                            "type": "list",
+                            "value": [
+                                "firstLetter"
+                            ]
+                        },
+                        {
+                            "type": "name",
+                            "value": "firstLetter"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "select",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "addNewLineToDisplay"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "cmd",
+            "command": "run",
+            "args": [
+                {
+                    "type": "name",
+                    "value": "addNewLineToDisplay"
+                }
+            ]
+        }
+    ]
+}
