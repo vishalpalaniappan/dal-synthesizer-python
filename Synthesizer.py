@@ -84,6 +84,11 @@ class Synthesizer:
         dst = Path(__file__).parent / "output" / "LoggingHelper.py"
         shutil.copy(src, dst)
 
+        # Copyt worldState
+        src = Path(__file__).parent / "output_helpers" / "WorldState.py"
+        dst = Path(__file__).parent / "output" / "WorldState.py"
+        shutil.copy(src, dst)
+
 
     def processTree(self, dalAstNode, pythonAstNode, indent):
         '''
