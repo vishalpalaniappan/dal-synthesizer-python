@@ -83,19 +83,23 @@ def getCmdLogAst(node):
         # 1 - Behavior
         # 2 - Invariant Name
         # 3 - Invariant Participant
+        # 4 - Protected Behavior
         loggerFunc = "logInvariant"
         args = [
             ast.Constant(value=node["args"][1]["value"]),
             ast.Constant(value=node["args"][2]["value"]),
-            ast.Constant(value=node["args"][3]["value"])
+            ast.Constant(value=node["args"][3]["value"]),
+            ast.Constant(value=node["args"][4]["value"])
         ]
     elif (type == "invariantViolation"):
         # 1 - Behavior
         # 2 - Invariant Name
+        # 3 - Protected Behavior
         loggerFunc = "logInvariantViolation"
         args = [
             ast.Constant(value=node["args"][1]["value"]),
-            ast.Constant(value=node["args"][2]["value"])
+            ast.Constant(value=node["args"][2]["value"]),
+            ast.Constant(value=node["args"][3]["value"])
         ]
     else:
         # Unknown log type

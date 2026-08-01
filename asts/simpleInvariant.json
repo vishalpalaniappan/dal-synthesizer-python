@@ -78,7 +78,6 @@
                 },
                 {
                     "type": "invariant",
-                    "invariantName": "name_length",
                     "args": [],
                     "body": [
                         {
@@ -100,12 +99,16 @@
                                 {
                                     "type": "string",
                                     "value": "name"
+                                },
+                                {
+                                    "type": "string",
+                                    "value": "getFirstLetterOfBookName"
                                 }
                             ]
                         },
                         {
-                            "type": "cmd",
-                            "command": "getLength",
+                            "type": "registeredCmd",
+                            "command": "_getLength",
                             "args": [
                                 {
                                     "type": "name",
@@ -118,8 +121,8 @@
                             ]
                         },
                         {
-                            "type": "cmd",
-                            "command": "isGreaterThan",
+                            "type": "registeredCmd",
+                            "command": "_isEqual",
                             "args": [
                                 {
                                     "type": "name",
@@ -159,6 +162,10 @@
                                         {
                                             "type": "string",
                                             "value": "name_length"
+                                        },
+                                        {
+                                            "type": "string",
+                                            "value": "getFirstLetterOfBookName"
                                         }
                                     ]
                                 }

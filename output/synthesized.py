@@ -13,9 +13,11 @@ def getName():
     global worldState
     name = input('Provide Name: ')
     if True:
-        semanticLogger.logInvariant('getName', 'name_length', 'name')
+        semanticLogger.logInvariant('getName', 'name_length', 'name', 'getFirstLetterOfBookName')
+        inv_nameLength = getLength(name)
+        inv_isValid = isEqual(inv_nameLength, 0)
         if inv_isValid:
-            semanticLogger.logInvariantViolation('getName', 'name_length')
+            semanticLogger.logInvariantViolation('getName', 'name_length', 'getFirstLetterOfBookName')
     worldState['name'] = name
     return 'getFirstLetterOfName'
 
