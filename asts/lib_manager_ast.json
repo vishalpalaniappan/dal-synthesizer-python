@@ -110,6 +110,10 @@
                     "args": [
                         {
                             "type": "string",
+                            "value": "participant"
+                        },
+                        {
+                            "type": "string",
                             "value": "getChoice"
                         },
                         {
@@ -490,6 +494,10 @@
                     "type": "cmd",
                     "command": "log",
                     "args": [
+                        {
+                            "type": "string",
+                            "value": "participant"
+                        },
                         {
                             "type": "string",
                             "value": "getName"
