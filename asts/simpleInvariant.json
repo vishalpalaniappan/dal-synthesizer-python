@@ -26,6 +26,24 @@
                 },
                 {
                     "type": "cmd",
+                    "command": "worldState",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "val"
+                        },
+                        {
+                            "type": "string",
+                            "value": "get"
+                        },
+                        {
+                            "type": "string",
+                            "value": "bucket"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
                     "command": "select",
                     "args": [
                         {

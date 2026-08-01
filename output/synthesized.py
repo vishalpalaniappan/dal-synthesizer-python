@@ -6,6 +6,7 @@ def addNewLineToDisplay():
     semanticLogger.logBehavior('addNewLineToDisplay')
     global worldState
     print(f'')
+    val = worldState.get('bucket')
     return 'getName'
 
 def getName():
