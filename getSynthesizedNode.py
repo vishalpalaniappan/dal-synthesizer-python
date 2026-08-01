@@ -64,23 +64,52 @@ def getCmdLogAst(node):
         semanticLogger.logParticipant(<behavior>, <name>, <type>, <value>)
     
     '''
-    behavior = node["args"][0]["value"]
-    name = node["args"][1]["value"]
-    type = node["args"][2]["value"]
-    value = node["args"][3]["value"]
+    
+    type = node["args"][0]["value"]
+
+    if (type == "participant"):
+        # 1 - Behavior
+        # 2 - Participant Name
+        # 3 - Participant Type
+        # 4 - Participant Value
+        loggerFunc = "logParticipant"
+        args = [
+            ast.Constant(value=node["args"][1]["value"]),
+            ast.Constant(value=node["args"][2]["value"]),
+            ast.Constant(value=node["args"][3]["value"]),
+            ast.Name(id=node["args"][4]["value"], ctx=ast.Load()),
+        ]
+    elif (type == "invariant"):
+        # 1 - Behavior
+        # 2 - Invariant Name
+        # 3 - Invariant Participant
+        loggerFunc = "logInvariant"
+        args = [
+            ast.Constant(value=node["args"][1]["value"]),
+            ast.Constant(value=node["args"][2]["value"]),
+            ast.Constant(value=node["args"][3]["value"])
+        ]
+    elif (type == "invariantViolation"):
+        # 1 - Behavior
+        # 2 - Invariant Name
+        loggerFunc = "logInvariantViolation"
+        args = [
+            ast.Constant(value=node["args"][1]["value"]),
+            ast.Constant(value=node["args"][2]["value"])
+        ]
+    else:
+        # Unknown log type
+        return
+
+
     return ast.Expr(
         value=ast.Call(
             func=ast.Attribute(
                 value=ast.Name(id="semanticLogger", ctx=ast.Load()),
-                attr="logParticipant",
+                attr=loggerFunc,
                 ctx=ast.Load(),
             ),
-            args=[
-                ast.Constant(value=behavior),
-                ast.Constant(value=name),
-                ast.Constant(value=type),
-                ast.Name(id=value, ctx=ast.Load()),
-            ],
+            args=args,
             keywords=[],
         )
     )
