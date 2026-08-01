@@ -118,6 +118,50 @@ def getCmdLogAst(node):
         )
     )
 
+        
+def getCmdWorldStateAst(node):
+    '''
+        Command structure:
+        worldState(<cmd>, <arg>)
+
+        Usage Example:
+        worldState(null, "add", "bucket", [])
+        worldState.add(bucket, [])
+
+        worldState(uid, "getUid", "bucket")
+        uid = worldState.getUid("bucket")
+    '''
+    cmd = node["args"][1]["value"]
+
+    argList = []
+    for arg in node["args"][2:]:
+        if (arg["type"] == "name"):
+            value = ast.Name(id=arg["value"], ctx=ast.Load())
+        else:
+            value = ast.Constant(value=arg["value"])
+        argList.append(value)
+
+    call = ast.Call(
+        func=ast.Attribute(
+            value=ast.Name(id="worldState", ctx=ast.Load()),
+            attr=cmd,
+            ctx=ast.Load(),
+        ),
+        args=argList,
+        keywords=[],
+    )
+
+    if (node["args"][0]["type"] == "null"):
+        return call
+    else:
+        return ast.Assign(
+            targets=[
+                ast.Name(id=node["args"][0]["value"], ctx=ast.Store())
+            ],
+            value=call
+        )
+    
+
 def getBehaviorAst(node):
     '''
         def <behaviorName>():
