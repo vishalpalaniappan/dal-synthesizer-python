@@ -55,5 +55,6 @@ class LoggingHelper:
         entry["metaType"] = metaType
         entry["participantName"] = participantName
         entry["participantValue"] = participantValue
+        logger.info(entry)
 
 semanticLogger = LoggingHelper()
