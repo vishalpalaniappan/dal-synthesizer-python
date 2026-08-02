@@ -447,9 +447,63 @@ class SynthesizeNode:
             if __name__ == "__main__":
                 nextBehavior = <startBehavior>
                 while nextBehavior:
-                    nextBehavior = globals()[nextBehavior]()
+                    try:
+                        nextBehavior = globals()[nextBehavior]()
+                    except Exception as e:
+                        worldStateManager.setFailure(nextBehavior)
         '''
         nextBehavior = node["args"][0]["value"]
+
+        tryBlock = ast.Try(
+            body=[
+                ast.Assign(
+                    targets=[
+                        ast.Name(id="nextBehavior", ctx=ast.Store())
+                    ],
+                    value=ast.Call(
+                        func=ast.Subscript(
+                            value=ast.Call(
+                                func=ast.Name(
+                                    id="globals",
+                                    ctx=ast.Load(),
+                                ),
+                                args=[],
+                                keywords=[],
+                            ),
+                            slice=ast.Name(
+                                id="nextBehavior",
+                                ctx=ast.Load(),
+                            ),
+                            ctx=ast.Load(),
+                        ),
+                        args=[],
+                        keywords=[],
+                    ),
+                )
+            ],
+            handlers=[
+                ast.ExceptHandler(
+                    type=ast.Name(id="Exception", ctx=ast.Load()),
+                    name="e",
+                    body=[
+                        ast.Expr(
+                            value=ast.Call(
+                                func=ast.Attribute(
+                                    value=ast.Name(id="worldStateManager", ctx=ast.Load()),
+                                    attr="setFailure",
+                                    ctx=ast.Load(),
+                                ),
+                                args=[],
+                                keywords=[],
+                            )
+                        )
+                    ]
+                )
+            ],
+            orelse=[],
+            finalbody=[]
+        )
+
         return ast.If(
             test=ast.Compare(
                 left=ast.Name(id="__name__", ctx=ast.Load()),
@@ -488,32 +542,7 @@ class SynthesizeNode:
                 ),
                 ast.While(
                     test=ast.Name(id="nextBehavior", ctx=ast.Load()),
-                    body=[
-                        ast.Assign(
-                            targets=[
-                                ast.Name(id="nextBehavior", ctx=ast.Store())
-                            ],
-                            value=ast.Call(
-                                func=ast.Subscript(
-                                    value=ast.Call(
-                                        func=ast.Name(
-                                            id="globals",
-                                            ctx=ast.Load(),
-                                        ),
-                                        args=[],
-                                        keywords=[],
-                                    ),
-                                    slice=ast.Name(
-                                        id="nextBehavior",
-                                        ctx=ast.Load(),
-                                    ),
-                                    ctx=ast.Load(),
-                                ),
-                                args=[],
-                                keywords=[],
-                            ),
-                        )
-                    ],
+                    body=[tryBlock],
                     orelse=[],
                 ),
             ],

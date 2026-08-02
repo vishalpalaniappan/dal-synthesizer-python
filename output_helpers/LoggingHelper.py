@@ -57,4 +57,10 @@ class LoggingHelper:
         entry["participantValue"] = participantValue
         logger.info(entry)
 
+    def logFailure(self, behaviorName):
+        entry = {}
+        entry["type"] = "falure"
+        entry["behaviorName"] = behaviorName
+        logger.info(entry)
+
 semanticLogger = LoggingHelper()
