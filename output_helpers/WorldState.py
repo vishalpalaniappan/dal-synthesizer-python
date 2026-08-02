@@ -35,13 +35,13 @@ class WorldState:
         return self.worldState[name]
 
     def remove(self, name):
-        del self.worldState[name]
         if self.mode == "verbose":
-            semanticLogger.logParticipantV2("remove", name, self.worldState[name]["value"])
+            semanticLogger.logParticipantV2("remove", name)
+        del self.worldState[name]
 
     def get(self, name):
         if self.mode == "verbose":
-            semanticLogger.logParticipantV2("get", name, self.worldState[name]["value"])
+            semanticLogger.logParticipantV2("get", name)
         return self.worldState[name]
 
     def getValue(self, name):
