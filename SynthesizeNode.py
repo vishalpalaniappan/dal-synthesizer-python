@@ -470,7 +470,7 @@ class SynthesizeNode:
                     value=ast.Call(
                         func=ast.Name(id="WorldState", ctx=ast.Load()),
                         args=[
-                            ast.Name(id="mode", ctx=ast.Load())
+                            ast.Constant(value=self.mode)
                         ],
                         keywords=[]
                     )
