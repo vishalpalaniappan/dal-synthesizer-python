@@ -36,17 +36,17 @@ class WorldState:
 
     def remove(self, name):
         if self.mode == "verbose":
-            semanticLogger.logParticipantV2("remove", name)
+            semanticLogger.logParticipantV2("remove", name, None)
         del self.worldState[name]
 
     def get(self, name):
         if self.mode == "verbose":
-            semanticLogger.logParticipantV2("get", name)
+            semanticLogger.logParticipantV2("get", name, None)
         return self.worldState[name]
 
     def getValue(self, name):
         if self.mode == "verbose":
-            semanticLogger.logParticipantV2("getValue", name, self.worldState[name]["value"])
+            semanticLogger.logParticipantV2("getValue", name, None)
         return self.worldState[name]["value"]
 
     def getUid(self, name):
