@@ -33,7 +33,7 @@ class Synthesizer:
         importNode = ast.parse("from registered import *").body[0]
         self.pythonAst.body.insert(0, importNode)
 
-        importNode = ast.parse("from WorldState import worldStateManager").body[0]
+        importNode = ast.parse("from WorldState import WorldState").body[0]
         self.pythonAst.body.insert(0, importNode)
 
         synthSrc = ast.unparse(self.pythonAst)

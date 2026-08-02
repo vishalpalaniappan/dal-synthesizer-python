@@ -465,6 +465,18 @@ class SynthesizeNode:
             body=[
                 ast.Assign(
                     targets=[
+                        ast.Name(id="worldStateManager", ctx=ast.Store())
+                    ],
+                    value=ast.Call(
+                        func=ast.Name(id="WorldState", ctx=ast.Load()),
+                        args=[
+                            ast.Name(id="mode", ctx=ast.Load())
+                        ],
+                        keywords=[]
+                    )
+                ),
+                ast.Assign(
+                    targets=[
                         ast.Name(id="nextBehavior", ctx=ast.Store())
                     ],
                     value=ast.Constant(value=nextBehavior),
