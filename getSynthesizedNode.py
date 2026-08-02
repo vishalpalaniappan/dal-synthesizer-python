@@ -1,7 +1,7 @@
 import ast
 from helper import getVariableNameWithKeys
 
-def getSynthesizedNode(node):
+def getSynthesizedNode(node, mode):
     '''
         Get the AST node given the dalAST metadata.
 

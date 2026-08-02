@@ -99,7 +99,7 @@ class Synthesizer:
             Writes the synthesized ast node to the ast tree.
         '''
         # self.printTree(indent, dalAstNode["type"])
-        astNodeBody = getSynthesizedNode(dalAstNode)
+        astNodeBody = getSynthesizedNode(dalAstNode, self.mode)
 
         if astNodeBody is None:
             if dalAstNode['type'] == "cmd":
