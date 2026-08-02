@@ -16,8 +16,10 @@ class WorldState:
             "value": value
         }
 
-        if "uid" not in value:
+        if "uid" in value:
             self.worldState[name]["uid"] = value["uid"]
+        else:
+            self.worldState[name]["uid"] = str(uuid.uuid4())
 
         return self.worldState[name]
 
