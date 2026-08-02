@@ -19,7 +19,7 @@ class WorldState:
             }
         else:
             self.worldState[name] = {
-                "value": value["value"],
+                "value": value,
                 "uid": str(uuid.uuid4())
             }
 
