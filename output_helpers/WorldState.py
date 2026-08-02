@@ -6,6 +6,11 @@ class WorldState:
         This class will contain the world state of the design. It will
         assign a UID to each participant that is added and then it will
         return the value when requested or the UID + value.
+
+        It wll also act as the boudary through which all world state
+        transformations happen. This will then allow you to log all the
+        information needed to understand how the design modifies the world
+        state and the invariants that were violated.
     '''
 
     def __init__(self):
