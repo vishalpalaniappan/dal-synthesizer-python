@@ -14,8 +14,19 @@ def main(argv):
         required=False,
         help="Path to ast file"
     )
+
+    args_parser.add_argument(
+        "--mode",
+        required=False,
+        help="Verbose or minimal logging (values: minimal or verbose)"
+    )
     
     parsed_args = args_parser.parse_args(argv[1:])
+
+    if parsed_args.mode == "minimal" or parsed_args.mode == "verbose":
+        mode = parsed_args.mode
+    else:
+        mode = "verbose"
 
     if parsed_args.ast:
         try:
@@ -24,10 +35,10 @@ def main(argv):
         except Exception as e:
             print(f"Invalid arguments: {str(e)}", file=sys.stderr)
             return -1
-        synth = Synthesizer(dalAst=ast, stream=False)
+        synth = Synthesizer(dalAst=ast, mode=mode, stream=False)
     else:
         ast = json.loads(sys.stdin.read())
-        synth = Synthesizer(dalAst=ast, stream=True)
+        synth = Synthesizer(dalAst=ast, mode=mode, stream=True)
 
 
     synth.run()

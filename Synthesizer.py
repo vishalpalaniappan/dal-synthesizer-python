@@ -9,9 +9,10 @@ import shutil
 
 class Synthesizer:
     
-    def __init__(self, dalAst, stream):
+    def __init__(self, dalAst, mode, stream):
         self.dalAst = dalAst
         self.stream = stream
+        self.mode = mode
         self.pythonAst = ast.Module(
             body=[],
             type_ignores=[]
