@@ -1,4 +1,5 @@
 import uuid
+from LoggingHelper import semanticLogger
 
 class WorldState:
     '''
@@ -18,6 +19,7 @@ class WorldState:
                 "value": value,
                 "uid": str(uuid.uuid4())
             }
+        return self.worldState[name]
 
     def remove(self, name):
         del self.worldState[name]
@@ -33,6 +35,9 @@ class WorldState:
 
     def update(self, name, value):
         self.worldState[name]["value"] = value
+
+    def log(self, name):
+        semanticLogger.logParticipant(None, name, None, self.worldState[name])
 
 
 worldStateManager = WorldState()
