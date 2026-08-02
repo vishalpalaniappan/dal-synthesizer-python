@@ -31,7 +31,7 @@ class WorldState:
 
         if inputFlag:
             semanticLogger.logParticipantV2("addInput", name, self.worldState[name]["value"])
-        elif self.mode == "verbose" or input:
+        elif self.mode == "verbose":
             semanticLogger.logParticipantV2("add", name, self.worldState[name]["value"])
 
         return self.worldState[name]
