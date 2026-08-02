@@ -496,6 +496,10 @@ class SynthesizeNode:
                                 args=[],
                                 keywords=[],
                             )
+                        ),
+                        ast.Raise(
+                            exc=ast.Name(id="e", ctx=ast.Load()),
+                            cause=None
                         )
                     ]
                 )
