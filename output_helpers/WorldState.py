@@ -17,6 +17,10 @@ class WorldState:
         self.worldState = {}
         self.mode = mode
 
+    def setBehavior(self, name):
+        if self.mode == "verbose":
+            semanticLogger.logBehavior(name)
+
     def add(self, name, value, inputFlag):
         if "uid" in value:
             self.worldState[name] = {

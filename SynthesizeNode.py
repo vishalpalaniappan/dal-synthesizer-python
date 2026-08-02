@@ -174,8 +174,8 @@ class SynthesizeNode:
         logBehavior = ast.Expr(
             value=ast.Call(
                 func=ast.Attribute(
-                    value=ast.Name(id="semanticLogger", ctx=ast.Load()),
-                    attr="logBehavior",
+                    value=ast.Name(id="worldStateManager", ctx=ast.Load()),
+                    attr="setBehavior",
                     ctx=ast.Load(),
                 ),
                 args=[
@@ -184,6 +184,7 @@ class SynthesizeNode:
                 keywords=[],
             )
         )
+
         return ast.FunctionDef(
             name=node["behaviorName"],
             args=ast.arguments(
@@ -195,12 +196,7 @@ class SynthesizeNode:
                 vararg=None,
                 kwarg=None
             ),
-            body=[
-                logBehavior,
-                ast.Global(
-                    names=["worldState"]
-                )
-            ],
+            body= [logBehavior, ast.Global(names=["worldState"])],
             decorator_list=[]
         )
 
