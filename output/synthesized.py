@@ -1,3 +1,4 @@
+from WorldState import worldState
 from registered import *
 from LoggingHelper import semanticLogger
 design = 'simple_invariant_test'
@@ -7,6 +8,8 @@ def addNewLineToDisplay():
     global worldState
     print(f'')
     val = worldState.get('bucket')
+    worldState.add('bookName', 'test')
+    uid = worldState.getUid('bookName')
     return 'getName'
 
 def getName():
