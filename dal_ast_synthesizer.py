@@ -18,15 +18,13 @@ def main(argv):
     args_parser.add_argument(
         "--mode",
         required=False,
-        help="Verbose or minimal logging (values: minimal or verbose)"
+        default="verbose",
+        choices=["minimal", "verbose"],
+        help="Verbose or minimal logging (values:  or )"
     )
     
     parsed_args = args_parser.parse_args(argv[1:])
-
-    if parsed_args.mode == "minimal" or parsed_args.mode == "verbose":
-        mode = parsed_args.mode
-    else:
-        mode = "verbose"
+    mode = parsed_args.mode
 
     if parsed_args.ast:
         try:
