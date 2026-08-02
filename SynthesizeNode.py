@@ -23,8 +23,10 @@ class SynthesizeNode:
         else:
             funcName = f"get{type[0].upper() +type[1:]}Ast"
 
-        if (funcName in globals()):
-            return globals()[funcName](node)
+        method = getattr(self, funcName, None)
+
+        if (callable(method)):
+            return getattr(self, funcName)(node)
 
     def getRegisteredCall(self,node):
         '''
