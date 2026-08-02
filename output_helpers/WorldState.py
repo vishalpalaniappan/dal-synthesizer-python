@@ -13,9 +13,12 @@ class WorldState:
 
     def add(self, name, value):
         self.worldState[name] = {
-            "value": value,
-            "uid": str(uuid.uuid4())
+            "value": value
         }
+
+        if "uid" not in value:
+            self.worldState[name]["uid"] = value["uid"]
+
         return self.worldState[name]
 
     def remove(self, name):
