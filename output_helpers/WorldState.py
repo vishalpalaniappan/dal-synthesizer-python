@@ -13,8 +13,9 @@ class WorldState:
         state and the invariants that were violated.
     '''
 
-    def __init__(self):
+    def __init__(self, mode):
         self.worldState = {}
+        self.mode = mode
 
     def add(self, name, value):
         if "uid" in value:
@@ -44,9 +45,7 @@ class WorldState:
 
     def update(self, name, value):
         self.worldState[name]["value"] = value
+        self.log(name)
 
     def log(self, name):
         semanticLogger.logParticipant(None, name, None, self.worldState[name])
-
-
-worldStateManager = WorldState()
