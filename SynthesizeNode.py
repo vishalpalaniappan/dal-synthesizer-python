@@ -237,11 +237,12 @@ class SynthesizeNode:
             if True:
                 <body>
         '''
-        return ast.If(
-            test=ast.Constant(value=True),
-            body=[],
-            orelse=[],
-        )
+        if self.mode == "verbose":
+            return ast.If(
+                test=ast.Constant(value=True),
+                body=[],
+                orelse=[],
+            )
 
     def getIfAst(self, node):
         '''
