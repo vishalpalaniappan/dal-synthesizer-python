@@ -4,7 +4,7 @@ import io
 import sys
 import json
 from pathlib import Path
-from getSynthesizedNode import getSynthesizedNode
+from SynthesizeNode import SynthesizeNode
 import shutil
 
 class Synthesizer:
@@ -17,6 +17,7 @@ class Synthesizer:
             body=[],
             type_ignores=[]
         )
+        self.nodeSynthesizer = SynthesizeNode(mode)
 
     def run(self):
         '''
@@ -99,7 +100,7 @@ class Synthesizer:
             Writes the synthesized ast node to the ast tree.
         '''
         # self.printTree(indent, dalAstNode["type"])
-        astNodeBody = getSynthesizedNode(dalAstNode, self.mode)
+        astNodeBody = self.nodeSynthesizer.run(dalAstNode)
 
         if astNodeBody is None:
             if dalAstNode['type'] == "cmd":
