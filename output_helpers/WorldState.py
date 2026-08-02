@@ -17,7 +17,7 @@ class WorldState:
         self.worldState = {}
         self.mode = mode
 
-    def add(self, name, value, input):
+    def add(self, name, value, inputFlag):
         if "uid" in value:
             self.worldState[name] = {
                 "value": value["value"],
@@ -29,7 +29,9 @@ class WorldState:
                 "uid": str(uuid.uuid4())
             }
 
-        if self.mode == "verbose" or input:
+        if inputFlag:
+            semanticLogger.logParticipantV2("addInput", name, self.worldState[name]["value"])
+        elif self.mode == "verbose" or input:
             semanticLogger.logParticipantV2("add", name, self.worldState[name]["value"])
 
         return self.worldState[name]
