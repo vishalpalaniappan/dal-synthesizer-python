@@ -30,23 +30,23 @@ class WorldState:
             }
 
         if self.mode == "verbose" or input:
-            semanticLogger.logParticipantV2("add", name, self.worldState["value"])
+            semanticLogger.logParticipantV2("add", name, self.worldState[name]["value"])
 
         return self.worldState[name]
 
     def remove(self, name):
         del self.worldState[name]
         if self.mode == "verbose":
-            semanticLogger.logParticipantV2("remove", name, self.worldState["value"])
+            semanticLogger.logParticipantV2("remove", name, self.worldState[name]["value"])
 
     def get(self, name):
         if self.mode == "verbose":
-            semanticLogger.logParticipantV2("get", name, self.worldState["value"])
+            semanticLogger.logParticipantV2("get", name, self.worldState[name]["value"])
         return self.worldState[name]
 
     def getValue(self, name):
         if self.mode == "verbose":
-            semanticLogger.logParticipantV2("getValue", name, self.worldState["value"])
+            semanticLogger.logParticipantV2("getValue", name, self.worldState[name]["value"])
         return self.worldState[name]["value"]
 
     def getUid(self, name):
@@ -54,7 +54,7 @@ class WorldState:
 
     def update(self, name, value):
         if self.mode == "verbose":
-            semanticLogger.logParticipantV2("update", name, self.worldState["value"])
+            semanticLogger.logParticipantV2("update", name, self.worldState[name]["value"])
         self.worldState[name]["value"] = value
 
     def log(self, name):
