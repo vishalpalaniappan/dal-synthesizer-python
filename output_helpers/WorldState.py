@@ -12,14 +12,16 @@ class WorldState:
         self.worldState = {}
 
     def add(self, name, value):
-        self.worldState[name] = {
-            "value": value
-        }
-
         if "uid" in value:
-            self.worldState[name]["uid"] = value["uid"]
+            self.worldState[name] = {
+                "value": value["value"],
+                "uid": value["uid"]
+            }
         else:
-            self.worldState[name]["uid"] = str(uuid.uuid4())
+            self.worldState[name] = {
+                "value": value["value"],
+                "uid": str(uuid.uuid4())
+            }
 
         return self.worldState[name]
 
