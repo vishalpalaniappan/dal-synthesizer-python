@@ -42,24 +42,20 @@ class Synthesizer:
 
         self.clearOutputFolder()
         metadata = {}
+
         for actor in self.actors:
-            print("Processing Actor:", actor["actorName"])
-            self.pythonAst = ast.Module(
-                body=[],
-                type_ignores=[]
-            )
+            if not self.stream:
+                print("Processing Actor:", actor["actorName"])
+
+            self.pythonAst = ast.Module(body=[],type_ignores=[])
+            
             # Process each node in the DAL ast.
             for node in actor["body"]:
                 self.processTree(node, self.pythonAst, 0)
 
-            importNode = ast.parse("from LoggingHelper import semanticLogger").body[0]
-            self.pythonAst.body.insert(0, importNode)
-
-            importNode = ast.parse("from registered import *").body[0]
-            self.pythonAst.body.insert(0, importNode)
-
-            importNode = ast.parse("from WorldState import WorldState").body[0]
-            self.pythonAst.body.insert(0, importNode)
+            self.pythonAst.body.insert(0, ast.parse("from LoggingHelper import semanticLogger").body[0])
+            self.pythonAst.body.insert(0, ast.parse("from registered import *").body[0])
+            self.pythonAst.body.insert(0, ast.parse("from WorldState import WorldState").body[0])
 
             synthSrc = ast.unparse(self.pythonAst)
 
@@ -68,6 +64,7 @@ class Synthesizer:
             else:
                 self.writeToOutputFolder(synthSrc, actor["actorName"])
 
+        # If stream mode, write the synth output package through stdout
         if self.stream:
             with open(Path(__file__).parent / "output_helpers" / "LoggingHelper.py","r") as f:
                 metadata["LoggingHelper.py"] = f.read()
