@@ -49,4 +49,18 @@ class LoggingHelper:
         entry["protectedBehavior"] = protectedBehavior
         logger.info(entry)
 
+    def logParticipantV2(self, metaType, participantName, participantValue):
+        entry = {}
+        entry["type"] = "participant"
+        entry["metaType"] = metaType
+        entry["participantName"] = participantName
+        entry["participantValue"] = participantValue
+        logger.info(entry)
+
+    def logFailure(self, behaviorName):
+        entry = {}
+        entry["type"] = "falure"
+        entry["behaviorName"] = behaviorName
+        logger.info(entry)
+
 semanticLogger = LoggingHelper()

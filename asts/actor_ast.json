@@ -1,0 +1,56 @@
+{
+    "type": "root",
+    "body": [
+        {
+            "type": "design",
+            "design_name": [
+                {
+                    "type": "string",
+                    "value": "multiple_actors_design"
+                }
+            ]
+        },
+        {
+            "type": "actor",
+            "actorName": "receiver",
+            "body": [
+                {
+                    "type": "behavior",
+                    "behaviorName": "test",
+                    "body": []
+                },
+                {
+                    "type": "cmd",
+                    "command": "run",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "test"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "actor",
+            "actorName": "processor",
+            "body": [
+                {
+                    "type": "behavior",
+                    "behaviorName": "test",
+                    "body": []
+                },
+                {
+                    "type": "cmd",
+                    "command": "run",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "test"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -13,6 +13,8 @@ class Synthesizer:
         self.dalAst = dalAst
         self.stream = stream
         self.mode = mode
+        self.designName = None
+        self.actors = []
         self.pythonAst = ast.Module(
             body=[],
             type_ignores=[]
@@ -23,46 +25,62 @@ class Synthesizer:
         '''
             Run the synthesizer
         '''
-        # Process each node in the DAL ast.
-        for node in self.dalAst["body"]:
-            self.processTree(node, self.pythonAst, 0)
+        self.getActors()
 
-        importNode = ast.parse("from LoggingHelper import semanticLogger").body[0]
-        self.pythonAst.body.insert(0, importNode)
+        # If no actors are included, then the entire AST represents a
+        # single actor, so we assign the design name as the actor and
+        # save it as ta single actor in the list.
+        if len(self.actors) == 0:        
+            for node in self.dalAst["body"]:
+                if node["type"] == "design":
+                    self.designName = node["design_name"][0]["value"]
+                    self.dalAst["actorName"] = self.designName
+                    self.actors.append(self.dalAst)    
 
-        importNode = ast.parse("from registered import *").body[0]
-        self.pythonAst.body.insert(0, importNode)
+        if self.designName == None:
+            raise RuntimeError("No design name provided")
 
-        importNode = ast.parse("from WorldState import WorldState").body[0]
-        self.pythonAst.body.insert(0, importNode)
+        self.clearOutputFolder()
+        metadata = {}
+        for actor in self.actors:
+            print("Processing Actor:", actor["actorName"])
+            self.pythonAst = ast.Module(
+                body=[],
+                type_ignores=[]
+            )
+            # Process each node in the DAL ast.
+            for node in actor["body"]:
+                self.processTree(node, self.pythonAst, 0)
 
-        synthSrc = ast.unparse(self.pythonAst)
+            importNode = ast.parse("from LoggingHelper import semanticLogger").body[0]
+            self.pythonAst.body.insert(0, importNode)
+
+            importNode = ast.parse("from registered import *").body[0]
+            self.pythonAst.body.insert(0, importNode)
+
+            importNode = ast.parse("from WorldState import WorldState").body[0]
+            self.pythonAst.body.insert(0, importNode)
+
+            synthSrc = ast.unparse(self.pythonAst)
+
+            if self.stream:
+                metadata[actor["actorName"]] = synthSrc
+            else:
+                self.writeToOutputFolder(synthSrc, actor["actorName"])
 
         if self.stream:
-            helper = Path(__file__).parent / "output_helpers" / "LoggingHelper.py"
-            with open(helper,"r") as f:
-                srcLoggingHelper = f.read()
+            with open(Path(__file__).parent / "output_helpers" / "LoggingHelper.py","r") as f:
+                metadata["LoggingHelper.py"] = f.read()
 
-            helper = Path(__file__).parent / "output_helpers" / "WorldState.py"
-            with open(helper,"r") as f:
-                srcWorldState = f.read()
+            with open(Path(__file__).parent / "output_helpers" / "WorldState.py","r") as f:
+                metadata["WorldState.py"] = f.read()
 
-            metadata = {
-                "LoggingHelper.py": srcLoggingHelper,
-                "synthesized.py": synthSrc,
-                "WorldState.py": srcWorldState
-            }
             sys.stdout.buffer.write(json.dumps(metadata).encode("utf-8"))
-        else:
-            self.writeToOutputFolder(synthSrc)
 
-
-    def writeToOutputFolder(self, synthSrc):
+    def clearOutputFolder(self):
         '''
-            Writes the synthesized output to output folder and
-            also adds the logging helper.
-
-            If the output folder has files, clear it.
+            Clears the output folder and loads the helper files used
+            across all the applications.
         '''
         outputFolder = Path(__file__).parent / "output"
 
@@ -76,20 +94,33 @@ class Synthesizer:
             else:
                 item.unlink()
 
-        # Write the synthesized output
-        outputFile = Path(__file__).parent / "output" / "synthesized.py"
-        with open(outputFile,"w+") as f:
-            f.write(synthSrc)
+        designFolder = Path(__file__).parent / "output" / self.designName
+        designFolder.mkdir(parents=True, exist_ok=True)
 
         # Copyt logging helper
         src = Path(__file__).parent / "output_helpers" / "LoggingHelper.py"
-        dst = Path(__file__).parent / "output" / "LoggingHelper.py"
+        dst = Path(__file__).parent / "output" / self.designName / "LoggingHelper.py"
         shutil.copy(src, dst)
 
         # Copyt worldState
         src = Path(__file__).parent / "output_helpers" / "WorldState.py"
-        dst = Path(__file__).parent / "output" / "WorldState.py"
+        dst = Path(__file__).parent / "output" / self.designName / "WorldState.py"
         shutil.copy(src, dst)
+
+    def writeToOutputFolder(self, synthSrc, actorName):
+        '''
+            Writes the synthesized output to output folder and
+            also adds the logging helper.
+
+            If the output folder has files, clear it.
+        '''
+        designFolder = Path(__file__).parent / "output" / self.designName
+        designFolder.mkdir(parents=True, exist_ok=True)
+
+        # Write the synthesized output
+        outputFile = Path(__file__).parent / "output" / self.designName / f'{actorName}.py'
+        with open(outputFile,"w+") as f:
+            f.write(synthSrc)
 
 
     def processTree(self, dalAstNode, pythonAstNode, indent):
@@ -124,3 +155,14 @@ class Synthesizer:
         '''
         spaces = (indent * 4) * " "
         print(f"{spaces}{value}")
+
+    def getActors(self):
+        '''
+            Gets all the actors from the design file.
+        '''
+        self.actors = []
+        for node in self.dalAst["body"]:
+            if node["type"] == "design":
+                self.designName = node["design_name"][0]["value"]
+            elif node["type"] == "actor":
+                self.actors.append(node)

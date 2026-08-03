@@ -44,6 +44,46 @@
                 },
                 {
                     "type": "cmd",
+                    "command": "worldState",
+                    "args": [
+                        {
+                            "type": "null",
+                            "value": null
+                        },
+                        {
+                            "type": "string",
+                            "value": "add"
+                        },
+                        {
+                            "type": "string",
+                            "value": "bookName"
+                        },
+                        {
+                            "type": "string",
+                            "value": "test"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "worldState",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "uid"
+                        },
+                        {
+                            "type": "string",
+                            "value": "getUid"
+                        },
+                        {
+                            "type": "string",
+                            "value": "bookName"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
                     "command": "select",
                     "args": [
                         {
