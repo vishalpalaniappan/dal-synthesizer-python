@@ -30,8 +30,13 @@ class Synthesizer:
         if self.designName == None:
             raise RuntimeError("No design name provided")
 
-        self.clearOutputFolder()
         metadata = {}
+
+        with open(Path(__file__).parent / "output_helpers" / "LoggingHelper.py","r") as f:
+            metadata["LoggingHelper.py"] = f.read()
+
+        with open(Path(__file__).parent / "output_helpers" / "WorldState.py","r") as f:
+            metadata["WorldState.py"] = f.read()
 
         for actor in self.actors:
             if not self.stream:
@@ -48,21 +53,15 @@ class Synthesizer:
             self.pythonAst.body.insert(0, ast.parse("from WorldState import WorldState").body[0])
 
             synthSrc = ast.unparse(self.pythonAst)
+            metadata[f'{actor[f"actorName"]}.py'] = synthSrc
 
-            if self.stream:
-                metadata[f'{actor[f"actorName"]}.py'] = synthSrc
-            else:
-                self.writeToOutputFolder(synthSrc, actor["actorName"])
-
-        # If stream mode, write the synth output package through stdout
+        # Stream through stdout or write to output folder
         if self.stream:
-            with open(Path(__file__).parent / "output_helpers" / "LoggingHelper.py","r") as f:
-                metadata["LoggingHelper.py"] = f.read()
-
-            with open(Path(__file__).parent / "output_helpers" / "WorldState.py","r") as f:
-                metadata["WorldState.py"] = f.read()
-
             sys.stdout.buffer.write(json.dumps(metadata).encode("utf-8"))
+        else:
+            self.clearOutputFolder()
+            for file in metadata:
+                self.writeToOutputFolder(metadata[file], file)
 
     def clearOutputFolder(self):
         '''
@@ -84,17 +83,7 @@ class Synthesizer:
         designFolder = Path(__file__).parent / "output" / self.designName
         designFolder.mkdir(parents=True, exist_ok=True)
 
-        # Copyt logging helper
-        src = Path(__file__).parent / "output_helpers" / "LoggingHelper.py"
-        dst = Path(__file__).parent / "output" / self.designName / "LoggingHelper.py"
-        shutil.copy(src, dst)
-
-        # Copyt worldState
-        src = Path(__file__).parent / "output_helpers" / "WorldState.py"
-        dst = Path(__file__).parent / "output" / self.designName / "WorldState.py"
-        shutil.copy(src, dst)
-
-    def writeToOutputFolder(self, synthSrc, actorName):
+    def writeToOutputFolder(self, src, name):
         '''
             Writes the synthesized output to output folder and
             also adds the logging helper.
@@ -105,9 +94,9 @@ class Synthesizer:
         designFolder.mkdir(parents=True, exist_ok=True)
 
         # Write the synthesized output
-        outputFile = Path(__file__).parent / "output" / self.designName / f'{actorName}.py'
+        outputFile = Path(__file__).parent / "output" / self.designName / f'{name}'
         with open(outputFile,"w+") as f:
-            f.write(synthSrc)
+            f.write(src)
 
 
     def processTree(self, dalAstNode, pythonAstNode, indent):
