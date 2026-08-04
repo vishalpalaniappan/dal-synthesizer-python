@@ -1,1 +1,0 @@
-{"designName": "multiple_actors_design", "actors": ["receiver", "processor"], "commands": ["python3 receiver", "python3 processor"]}
