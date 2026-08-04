@@ -27,16 +27,6 @@ class Synthesizer:
         '''
         self.getActors()
 
-        # If no actors are included, then the entire AST represents a
-        # single actor, so we assign the design name as the actor and
-        # save it as ta single actor in the list.
-        if len(self.actors) == 0:        
-            for node in self.dalAst["body"]:
-                if node["type"] == "design":
-                    self.designName = node["design_name"][0]["value"]
-                    self.dalAst["actorName"] = self.designName
-                    self.actors.append(self.dalAst)    
-
         if self.designName == None:
             raise RuntimeError("No design name provided")
 
