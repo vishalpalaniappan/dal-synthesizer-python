@@ -38,6 +38,7 @@ class Synthesizer:
         with open(Path(__file__).parent / "output_helpers" / "WorldState.py","r") as f:
             output["WorldState.py"] = f.read()
 
+        required = []
         for actor in self.actors:
             if not self.stream:
                 print("Processing Actor:", actor["actorName"])
@@ -49,8 +50,14 @@ class Synthesizer:
                 self.processTree(node, self.pythonAst, 0)
 
             self.pythonAst.body.insert(0, ast.parse("from LoggingHelper import semanticLogger").body[0])
-            self.pythonAst.body.insert(0, ast.parse("from registered import *").body[0])
             self.pythonAst.body.insert(0, ast.parse("from WorldState import WorldState").body[0])
+
+            if "includes" in actor:
+                for inc in actor["includes"]:
+                    required.append(inc)
+                    if inc.endswith(".py"):
+                        name = os.path.splitext(inc)[0]  
+                        self.pythonAst.body.insert(0, ast.parse(f"from {name} import *").body[0])
 
             synthSrc = ast.unparse(self.pythonAst)
             output[f'{actor[f"actorName"]}.py'] = synthSrc
@@ -58,7 +65,8 @@ class Synthesizer:
         metadata = {
             "designName": self.designName,
             "actors": [],
-            "commands":[]
+            "commands":[],
+            "required": required
         }
         for actor in self.actors:
             metadata["actors"].append(actor["actorName"])

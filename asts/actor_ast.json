@@ -6,7 +6,7 @@
             "design_name": [
                 {
                     "type": "string",
-                    "value": "multiple_actors_design"
+                    "value": "asdf"
                 }
             ]
         },
@@ -29,6 +29,10 @@
                         }
                     ]
                 }
+            ],
+            "includes": [
+                "test.py",
+                "sample.json"
             ]
         },
         {
