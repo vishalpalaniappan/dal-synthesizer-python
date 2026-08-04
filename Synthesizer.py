@@ -50,7 +50,7 @@ class Synthesizer:
             synthSrc = ast.unparse(self.pythonAst)
 
             if self.stream:
-                metadata[actor["actorName"]] = synthSrc
+                metadata[f'{actor[f"actorName"]}.py'] = synthSrc
             else:
                 self.writeToOutputFolder(synthSrc, actor["actorName"])
 
