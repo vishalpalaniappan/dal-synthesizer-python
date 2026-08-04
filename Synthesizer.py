@@ -30,13 +30,13 @@ class Synthesizer:
         if self.designName == None:
             raise RuntimeError("No design name provided")
 
-        metadata = {}
+        output = {}
 
         with open(Path(__file__).parent / "output_helpers" / "LoggingHelper.py","r") as f:
-            metadata["LoggingHelper.py"] = f.read()
+            output["LoggingHelper.py"] = f.read()
 
         with open(Path(__file__).parent / "output_helpers" / "WorldState.py","r") as f:
-            metadata["WorldState.py"] = f.read()
+            output["WorldState.py"] = f.read()
 
         for actor in self.actors:
             if not self.stream:
@@ -53,15 +53,26 @@ class Synthesizer:
             self.pythonAst.body.insert(0, ast.parse("from WorldState import WorldState").body[0])
 
             synthSrc = ast.unparse(self.pythonAst)
-            metadata[f'{actor[f"actorName"]}.py'] = synthSrc
+            output[f'{actor[f"actorName"]}.py'] = synthSrc
+
+        metadata = {
+            "designName": self.designName,
+            "actors": [],
+            "commands":[]
+        }
+        for actor in self.actors:
+            metadata["actors"].append(actor["actorName"])
+            metadata["commands"].append(f"python3 {actor['actorName']}")
+
+        output["metadata.json"] = json.dumps(metadata)
 
         # Stream through stdout or write to output folder
         if self.stream:
-            sys.stdout.buffer.write(json.dumps(metadata).encode("utf-8"))
+            sys.stdout.buffer.write(json.dumps(output).encode("utf-8"))
         else:
             self.clearOutputFolder()
-            for file in metadata:
-                self.writeToOutputFolder(metadata[file], file)
+            for file in output:
+                self.writeToOutputFolder(output[file], file)
 
     def clearOutputFolder(self):
         '''
