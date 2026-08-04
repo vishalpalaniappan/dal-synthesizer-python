@@ -44,6 +44,10 @@ The synthesizer itself traverses the AST and builds the synthesized implementati
 python3 dal_ast_synthesizer.py --ast ./asts/lib_manager_ast.json
 ```
 
+```bash
+python3 dal_ast_synthesizer.py --ast ./asts/actor_ast.json
+```
+
 ## NodeJS Runner Usage
 ```bash
 node node/synthesisTest.js asts/lib_manager_ast.json
