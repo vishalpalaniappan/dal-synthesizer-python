@@ -2,11 +2,14 @@ import logging
 from pathlib import Path
 from clp_logging.handlers import ClpKeyValuePairStreamHandler
 
-import os, uuid
+import uuid
 
 ADLI_EXECUTION_ID = str(uuid.uuid4())
 
-path = Path(os.path.dirname(__file__)) / f"{ADLI_EXECUTION_ID}.clp.zst"
+parent = Path(__file__).resolve().parent.parent
+(parent / "traces").mkdir(exist_ok=True)
+
+path = parent / "traces" / f"{ADLI_EXECUTION_ID}.clp.zst"
 clp_handler = ClpKeyValuePairStreamHandler(open(path, "wb"))
 logger = logging.getLogger("semanticLogger")
 logger.setLevel(logging.INFO)
