@@ -56,7 +56,7 @@ class Synthesizer:
                 for inc in actor["includes"]:
                     required.append(inc)
                     if inc.endswith(".py"):
-                        name = os.path.splitext(inc)[0]  
+                        name = os.path.basename(inc)
                         self.pythonAst.body.insert(0, ast.parse(f"from {name} import *").body[0])
 
             synthSrc = ast.unparse(self.pythonAst)
@@ -70,7 +70,7 @@ class Synthesizer:
         }
         for actor in self.actors:
             metadata["actors"].append(actor["actorName"])
-            metadata["commands"].append(f"python3 {actor['actorName']}")
+            metadata["commands"].append(f"python3 {actor['actorName']}.py")
 
         output["metadata.json"] = json.dumps(metadata)
 
