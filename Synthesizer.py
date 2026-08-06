@@ -54,7 +54,7 @@ class Synthesizer:
 
             if "includes" in actor:
                 for inc in actor["includes"]:
-                    required.append(inc)
+                    required.append(inc[0])
                     if inc[0].endswith(".py"):
                         name = os.path.splitext(inc[0])[0] 
                         self.pythonAst.body.insert(0, ast.parse(f"from {name} import *").body[0])
