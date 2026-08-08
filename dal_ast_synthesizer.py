@@ -20,7 +20,7 @@ def main(argv):
         required=False,
         default="verbose",
         choices=["minimal", "verbose"],
-        help="Verbose or minimal logging (values:  or )"
+        help="Verbose or minimal logging."
     )
     
     parsed_args = args_parser.parse_args(argv[1:])
