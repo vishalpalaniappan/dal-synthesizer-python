@@ -24,6 +24,13 @@ class Synthesizer:
     def run(self):
         '''
             Run the synthesizer
+            -------------------------------------
+            - Processes AST to extract each actor
+            - Processes each actors AST and synthesizes each node
+            - Creates metadata file that has the necessary files to include
+              and the commands to run the design
+            - Includes the synthesizer defined files (logging helper, world state manager)
+            - Streams output or writes it to folder.
         '''
         self.getActors()
 
