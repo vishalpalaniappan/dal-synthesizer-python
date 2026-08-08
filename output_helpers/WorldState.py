@@ -15,6 +15,7 @@ class WorldState:
 
     def __init__(self, mode):
         self.worldState = {}
+        self.behavior = None
         self.mode = mode
 
     def setBehavior(self, behaviorName):
