@@ -106,6 +106,10 @@ class Synthesizer:
             else:
                 item.unlink()
 
+        # Make traces folder if it doesn't exist
+        tracesFolder = Path(__file__).parent / "output" / "traces"
+        tracesFolder.mkdir(parents=True, exist_ok=True)
+
         designFolder = Path(__file__).parent / "output" / self.designName
         designFolder.mkdir(parents=True, exist_ok=True)
 
