@@ -64,9 +64,9 @@ class WorldState:
         return self.worldState[name]["uid"]
 
     def update(self, name, value):
+        self.worldState[name]["value"] = value
         if self.mode == "verbose":
             semanticLogger.logParticipantV2("update", name, self.worldState[name]["value"])
-        self.worldState[name]["value"] = value
 
     def log(self, name):
         semanticLogger.logParticipant(None, name, None, self.worldState[name])
