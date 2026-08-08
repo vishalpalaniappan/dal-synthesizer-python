@@ -62,7 +62,7 @@ class LoggingHelper:
 
     def logFailure(self, behaviorName):
         entry = {}
-        entry["type"] = "falure"
+        entry["type"] = "failure"
         entry["behaviorName"] = behaviorName
         logger.info(entry)
 
