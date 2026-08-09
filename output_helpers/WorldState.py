@@ -26,7 +26,7 @@ class WorldState:
     def setFailure(self):
         semanticLogger.logFailure(self.behavior)
 
-    def add(self, name, value, inputFlag):
+    def add(self, name, value, type, inputFlag):
         if "uid" in value:
             self.worldState[name] = {
                 "value": value["value"],
@@ -50,12 +50,12 @@ class WorldState:
             semanticLogger.logParticipantV2("remove", name, None)
         del self.worldState[name]
 
-    def get(self, name):
+    def get(self, name, type):
         if self.mode == "verbose":
             semanticLogger.logParticipantV2("get", name, None)
         return self.worldState[name]
 
-    def getValue(self, name):
+    def getValue(self, name, type):
         if self.mode == "verbose":
             semanticLogger.logParticipantV2("getValue", name, None)
         return self.worldState[name]["value"]
@@ -63,7 +63,7 @@ class WorldState:
     def getUid(self, name):
         return self.worldState[name]["uid"]
 
-    def update(self, name, value):
+    def update(self, name, value, type):
         self.worldState[name]["value"] = value
         if self.mode == "verbose":
             semanticLogger.logParticipantV2("update", name, self.worldState[name]["value"])
