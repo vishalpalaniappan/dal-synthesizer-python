@@ -26,6 +26,26 @@ class WorldState:
     def setFailure(self):
         semanticLogger.logFailure(self.behavior)
 
+    def create(self, name, value, type, role, inputFlag):
+        if "uid" in value:
+            self.worldState[name] = {
+                "value": value["value"],
+                "uid": value["uid"]
+            }
+        else:
+            self.worldState[name] = {
+                "value": value,
+                "uid": str(uuid.uuid4())
+            }
+
+        if inputFlag:
+            semanticLogger.logParticipantV2("addInput", name, self.worldState[name]["value"])
+        elif self.mode == "verbose":
+            semanticLogger.logParticipantV2("create", name, self.worldState[name]["value"])
+
+        return self.worldState[name]
+
+
     def add(self, name, value, type, role, inputFlag):
         if "uid" in value:
             self.worldState[name] = {
