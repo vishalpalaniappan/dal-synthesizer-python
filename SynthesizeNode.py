@@ -224,21 +224,13 @@ class SynthesizeNode:
 
     def getInvariantAst(self, node):
         '''
-            I am synthesizing the invariant block as an
-            if statement that always evaluates to true.
-
-            TODO: Improve this by rendering contents of
-            invariant block without the if statement.
-            
-            if True:
-                <body>
+            In verbose mode, tell synthesizer to show
+            the body of the invariant.
         '''
         if self.mode == "verbose":
-            return ast.If(
-                test=ast.Constant(value=True),
-                body=[],
-                orelse=[],
-            )
+            return "render_body"
+        else:
+            return None
 
     def getSelectAst(self, node):
         '''
