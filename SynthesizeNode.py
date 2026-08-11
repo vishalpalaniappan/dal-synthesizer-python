@@ -196,7 +196,7 @@ class SynthesizeNode:
                 vararg=None,
                 kwarg=None
             ),
-            body= [logBehavior, ast.Global(names=["worldState"])],
+            body= [logBehavior],
             decorator_list=[]
         )
 
