@@ -147,6 +147,11 @@ class Synthesizer:
 
             if not self.stream:
                 print(f"Unable to synthesize node of type {type}")
+
+        elif astNodeBody == "render_body":
+            if "body" in dalAstNode:
+                for node in dalAstNode["body"]:
+                    self.processTree(node, pythonAstNode, indent + 1)
         else:
             ast.fix_missing_locations(astNodeBody)
             pythonAstNode.body.append(astNodeBody)

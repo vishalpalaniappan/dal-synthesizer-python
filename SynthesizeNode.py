@@ -240,6 +240,14 @@ class SynthesizeNode:
                 orelse=[],
             )
 
+    def getSelectAst(self, node):
+        '''
+            Returning render body to tell synthesizer
+            to synthesize body of node even though I am
+            not returning a valid ast.
+        '''
+        return "render_body"
+
     def getIfAst(self, node):
         '''
             if <condition>:
@@ -332,7 +340,7 @@ class SynthesizeNode:
             targets=[ast.Name(id=target, ctx=ast.Store())]
         )
 
-    def getCmdSelectAst(self, node):
+    def getCmdGoToBehaviorAst(self, node):
         '''
             Command: select(<nextBehavior>)
 
