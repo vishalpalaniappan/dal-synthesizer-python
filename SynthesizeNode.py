@@ -438,6 +438,47 @@ class SynthesizeNode:
             )
         )
 
+    def getCmdRunAstV2(self,node):
+        '''
+            I'm moving the run command to a new version:
+
+            Command: 
+            
+                run(<designName>, <startBehavior>, args...)
+
+            Synthesized:
+
+                def <composite_behavior>(<startBehavior>, args...):
+                    <startBehavior>(args...)
+
+                if __name__ == "__main__":
+                    <composite_behavior>(args...)    
+
+                This is being done to establish a boundary between a 
+                composite behavior and its environment. In this case,
+                the meaning  is being invoked by another behavior while
+                providing the necessary participants to realize the
+                meaning. 
+
+                Since all the behaviors are accessing the same world 
+                state module, I can simply provide the name of the 
+                participants in the args and the behavior can access
+                them directly.
+
+                If I wanted to test the behavior locally, I can simply
+                provide a world state but it will be ultimatly used as
+                part of a larger design that will provide the necessary
+                world state.
+                
+                However, I am not settled on this, if I let the composite
+                behavior create its own world with the inputs and outputs
+                unambiguously establshed, it creates a much cleaner boundary
+                between the two behaviors. In fact, I think this is how I
+                will do it but I will start with the simpler approach of
+                using a shared world state.
+        '''
+        pass
+
     def getCmdRunAst(self, node):
         '''
             Command: run(<startBehavior>)
