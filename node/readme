@@ -1,3 +1,5 @@
 Usage (from root dir of repo):
 
-`node node/synthesisTest.js asts/lib_manager_ast.json `
+`node node/synthesisTest.js designs/library_manager.dal`
+
+Synthesized output will be in node/output. I am not copying the files from the metadata over but that will be done in the workbench.

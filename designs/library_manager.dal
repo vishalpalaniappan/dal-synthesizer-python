@@ -1,0 +1,309 @@
+design("library_manager")
+
+#participant BASKET {
+#   Placeholder for participant type declaration
+#   Establish participant metadata here
+#   This includes the domain structure of the participant
+#   that is passed to CLP.
+#    type("list")
+#}
+
+actor librarian {
+    include("registered.py")
+    include("computable_units.py")
+
+    #=============================
+    #      Create Basket
+    #=============================
+    behavior createBasket {
+        set("basket",[],[])
+        worldStateManager(
+            save_in=null, 
+            transformation=create, 
+            name="basket",
+            value=basket,
+            p_type="BASKET", 
+            p_role="BOOK_BASKET", 
+            is_input=False
+        )
+        select{
+            goToBehavior(getChoice)   
+        }
+    }
+
+    #=============================
+    #      Get Choice
+    #=============================
+    behavior getChoice {
+        getInput(choice, "\nGet user choice (a for add book, g for get book, else exit): ")
+        worldStateManager(
+            save_in=null, 
+            transformation=create, 
+            name="choice",
+            value=choice, 
+            p_type="CHOICE", 
+            p_role="USER_CHOICE", 
+            is_input=True
+        )
+        select{
+            goToBehavior(displayChoice)   
+        }
+    }
+
+
+    #=============================
+    #      Display Choice
+    #=============================
+    behavior displayChoice {
+        worldStateManager(
+            save_in=choice, 
+            transformation=getValue, 
+            name="choice",
+            p_type="CHOICE", 
+            p_role="USER_CHOICE"
+        )
+        display("f'User Choice: {choice}'")
+        select{
+            goToBehavior(evaluateChoice)   
+        }
+    }
+
+
+    #=============================
+    #      Evaluate Choice
+    #=============================
+    behavior evaluateChoice {
+        worldStateManager(
+            save_in=choice, 
+            transformation=getValue, 
+            name="choice",
+            p_type="CHOICE", 
+            p_role="USER_CHOICE"
+        )
+        _isEqual(isAdd, choice, "a")
+        _isEqual(isGet, choice, "g")
+        select{
+            if (isAdd) {
+                goToBehavior(addBookChoice)
+            }
+            if (isGet) {
+                goToBehavior(getBookChoice)
+            }
+        }
+    }
+
+
+    #=============================
+    #      Add Book Choice
+    #=============================
+    behavior addBookChoice {
+        select{
+            goToBehavior(getName)
+        }
+    }
+
+
+    #=============================
+    #      Get Book Choice
+    #=============================
+    behavior getBookChoice {
+        select{
+            goToBehavior(getBookFromBasket)
+        }
+    }
+
+
+    #=============================
+    #      Get Book From Basket
+    #=============================
+    behavior getBookFromBasket {
+        worldStateManager(
+            save_in=basket, 
+            transformation=getValue, 
+            name="basket",
+            p_type="BASKET", 
+            p_role="BOOK_BASKET"
+        )
+
+        _getFromPosition(book, basket, 0)
+        _removeFromPosition(null, basket, 0)
+
+        worldStateManager(
+            save_in=null, 
+            transformation=add, 
+            name="book",
+            value=book,
+            p_type="BOOK", 
+            p_role="BOOK_W_NAME", 
+            is_input=False
+        )
+        select{
+            goToBehavior(getBookName)
+        }
+    }
+
+    #=============================
+    #      Get Book Name
+    #=============================
+    behavior getBookName {
+        worldStateManager(
+            save_in=book, 
+            transformation=getValue, 
+            name="book",
+            p_type="BOOK", 
+            p_role="BOOK_W_NAME"
+        )
+
+        get(name, book, ["name"])
+
+        worldStateManager(
+            save_in=null, 
+            transformation=add, 
+            name="name",
+            value=name,
+            p_type="NAME", 
+            p_role="BOOK_NAME", 
+            is_input=False
+        )   
+        select{
+            goToBehavior(getFirstLetterOfBookName)
+        }
+    }
+
+    #======================================
+    #      Get First Letter of Book Name
+    #=====================================
+    behavior getFirstLetterOfBookName {
+        worldStateManager(
+            save_in=name, 
+            transformation=getValue, 
+            name="name",
+            p_type="NAME", 
+            p_role="BOOK_NAME"
+        )
+        
+        _getFromPosition(firstLetter, name, 0)
+        display("f'Got book named {name} and it has first letter {firstLetter}'")
+        
+        worldStateManager(
+            save_in=null, 
+            transformation=remove, 
+            name="book"
+        )  
+        select{
+            goToBehavior(getChoice)
+        }
+    }
+
+    #=============================
+    #      Get Book From Basket
+    #=============================
+    behavior getName {
+        getInput(name, "\nPlease enter book name: ")
+        
+        worldStateManager(
+            save_in=null, 
+            transformation=create, 
+            name="name",
+            value=name,
+            p_type="NAME", 
+            p_role="BOOK_NAME", 
+            is_input=True
+        )   
+        select{
+            goToBehavior(createBook)
+        }
+    }
+
+    #=============================
+    #     Create Book
+    #=============================
+    behavior createBook {
+        worldStateManager(
+            save_in=name, 
+            transformation=getValue, 
+            name="name",
+            p_type="NAME", 
+            p_role="BOOK_W_NAME"
+        )
+
+        set(book, [], {})
+        set(book, ["name"], name)
+
+        worldStateManager(
+            save_in=null, 
+            transformation=create, 
+            name="book",
+            value=book,
+            p_type="BOOK", 
+            p_role="BOOK_W_NAME", 
+            is_input=False
+        )   
+        worldStateManager(
+            save_in=null, 
+            transformation=remove, 
+            name="name"
+        )
+        select{
+            goToBehavior(addBookToBasket)
+        }
+    }
+
+    #=============================
+    #      Add Book To Basket
+    #=============================
+    behavior addBookToBasket {
+        worldStateManager(
+            save_in=book, 
+            transformation=get, 
+            name="book",
+            p_type="BOOK", 
+            p_role="BOOK_W_NAME"
+        )
+        worldStateManager(
+            save_in=basket, 
+            transformation=getValue, 
+            name="basket",
+            p_type="BASKET", 
+            p_role="BOOK_BASKET"
+        )
+
+        _insertIntoList(basket, basket, book, 0)
+
+        worldStateManager(
+            save_in=null, 
+            transformation=update, 
+            name="basket",
+            value=basket,
+            p_type="BASKET", 
+            p_role="BOOK_BASKET"
+        )   
+        worldStateManager(
+            save_in=null, 
+            transformation=remove, 
+            name="book"
+        )
+        select{
+            goToBehavior(showBasket)
+        }
+    }
+
+    #=============================
+    #      Show Basket
+    #=============================
+    behavior showBasket {
+        worldStateManager(
+            save_in=basket, 
+            transformation=getValue, 
+            name="basket",
+            p_type="BASKET", 
+            p_role="BOOK_BASKET"
+        )
+        display("f'Basket Contents: {basket}'")
+        select{
+            goToBehavior(getChoice)
+        }
+    }
+
+    run(createBasket)
+}

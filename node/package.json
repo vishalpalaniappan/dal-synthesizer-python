@@ -1,6 +1,7 @@
 {
   "type": "module",
   "dependencies": {
+    "dal-ast-js": "^0.0.18-dev",
     "unzipper": "^0.12.3"
   }
 }
