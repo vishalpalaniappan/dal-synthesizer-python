@@ -27,12 +27,12 @@ class WorldState:
         semanticLogger.logFailure(self.behavior)
 
     def create(self, name, value, type, role, inputFlag):
-        if "uid" in value:
+        try:
             self.worldState[name] = {
                 "value": value["value"],
                 "uid": value["uid"]
             }
-        else:
+        except:
             self.worldState[name] = {
                 "value": value,
                 "uid": str(uuid.uuid4())
