@@ -470,12 +470,10 @@ class SynthesizeNode:
                 part of a larger design that will provide the necessary
                 world state.
                 
-                However, I am not settled on this, if I let the composite
-                behavior create its own world with the inputs and outputs
-                unambiguously establshed, it creates a much cleaner boundary
-                between the two behaviors. In fact, I think this is how I
-                will do it but I will start with the simpler approach of
-                using a shared world state.
+                The higher level meaning will contain a library world and
+                this is then operated on by the behavior. In order to add
+                a book to the library, you need a library world with the
+                basket.
         '''
         pass
 
