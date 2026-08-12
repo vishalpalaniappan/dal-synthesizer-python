@@ -1,0 +1,16 @@
+design("test_design")
+
+
+compositeBehavior getBookFromLibrary {
+    behavior getBasket {
+        select {
+            goToBehavior(test2)
+        }
+    }
+
+    behavior getBook {
+        
+    }
+
+    run(getBasket)
+}
