@@ -1,16 +1,13 @@
-design("test_design")
+compositeBehavior(<composite_behavior>)
 
-
-compositeBehavior getBookFromLibrary {
-    behavior getBasket {
-        select {
-            goToBehavior(test2)
-        }
+behavior getBasket {
+    select {
+        goToBehavior(test2)
     }
-
-    behavior getBook {
-        
-    }
-
-    run(getBasket)
 }
+
+behavior getBook {
+    
+}
+
+run(getBasket)
