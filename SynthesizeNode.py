@@ -440,40 +440,59 @@ class SynthesizeNode:
 
     def getCmdRunAstV2(self,node):
         '''
-            I'm moving the run command to a new version:
+            I'm moving the run command to a new version so that
+            it can run a design and a composite behavior. It will
+            be specified in the following way:
+
+            design(<design_name>)
+            compositeBehavior(<composite_behavior>)
+
+            Then the run command will synthesize the relevant structure
+            neeed. Below, I show the example of a composite behavior, it
+            exposes a method that other behaviors can use to invoke it.
 
             Command: 
-            
-                run(<designName>, <startBehavior>, args...)
+                run(<startBehavior>)
 
             Synthesized:
-
-                def <composite_behavior>(<startBehavior>, args...):
-                    <startBehavior>(args...)
+                def <composite_behavior>():
+                    nextBehavior = (<startBehavior>
+                    
+                    nextBehavior = <startBehavior>
+                    while nextBehavior:
+                        try:
+                            nextBehavior = globals()[nextBehavior]()
+                        except Exception as e:
+                            worldStateManager.setFailure(nextBehavior)
 
                 if __name__ == "__main__":
                     <composite_behavior>(args...)    
 
-                This is being done to establish a boundary between a 
-                composite behavior and its environment. In this case,
-                the meaning  is being invoked by another behavior while
-                providing the necessary participants to realize the
-                meaning. 
-
-                Since all the behaviors are accessing the same world 
-                state module, I can simply provide the name of the 
-                participants in the args and the behavior can access
-                them directly.
-
-                If I wanted to test the behavior locally, I can simply
-                provide a world state but it will be ultimatly used as
-                part of a larger design that will provide the necessary
-                world state.
+            Invoking composite behavior:
+                runCompositeBehavior(<compositeBehavior>)
                 
-                The higher level meaning will contain a library world and
-                this is then operated on by the behavior. In order to add
-                a book to the library, you need a library world with the
-                basket.
+            Synthesized:                
+                <compositeBehavior>()
+
+            This is being done to establish a boundary between a 
+            composite behavior and its environment. In this case,
+            the meaning  is being invoked by another behavior while
+            providing the necessary participants to realize the
+            meaning. 
+
+            Since all the behaviors are accessing the same world 
+            state module, the behavior can access the necessary
+            participants directly.
+
+            If I wanted to test the behavior locally, I can simply
+            provide a world state but it will be ultimatly used as
+            part of a larger design that will provide the necessary
+            world state.
+            
+            The higher level meaning will contain a library world and
+            this is then operated on by the behavior. In order to add
+            a book to the library, you need a library world with the
+            basket.
         '''
         pass
 
