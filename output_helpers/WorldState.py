@@ -92,6 +92,12 @@ class WorldState:
         else:
             return False
 
+    def hasParticipants(self, names):
+        for name in names:
+            if name not in self.worldState:
+                return False
+        return True
+
     def update(self, name, value, type, role):
         self.worldState[name]["value"] = value
         if self.mode == "verbose":
