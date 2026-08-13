@@ -23,6 +23,9 @@ class WorldState:
         if self.mode == "verbose":
             semanticLogger.logBehavior(behaviorName)
 
+    def setInvariantViolation(self, invariantName, invartiantParticipant, protectedBehavior):
+        semanticLogger.logInvariant(self.behavior, invariantName, invartiantParticipant, protectedBehavior )
+
     def setFailure(self):
         semanticLogger.logFailure(self.behavior)
 
