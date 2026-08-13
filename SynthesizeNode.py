@@ -1,5 +1,6 @@
 import ast
 from helper import getVariableNameWithKeys
+from helper import getRunBlock
 
 class SynthesizeNode:
 
@@ -510,103 +511,6 @@ class SynthesizeNode:
                     except Exception as e:
                         worldStateManager.setFailure(nextBehavior)
         '''
-        nextBehavior = node["args"][0]["value"]
-
-        tryBlock = ast.Try(
-            body=[
-                ast.Assign(
-                    targets=[
-                        ast.Name(id="nextBehavior", ctx=ast.Store())
-                    ],
-                    value=ast.Call(
-                        func=ast.Subscript(
-                            value=ast.Call(
-                                func=ast.Name(
-                                    id="globals",
-                                    ctx=ast.Load(),
-                                ),
-                                args=[],
-                                keywords=[],
-                            ),
-                            slice=ast.Name(
-                                id="nextBehavior",
-                                ctx=ast.Load(),
-                            ),
-                            ctx=ast.Load(),
-                        ),
-                        args=[],
-                        keywords=[],
-                    ),
-                )
-            ],
-            handlers=[
-                ast.ExceptHandler(
-                    type=ast.Name(id="Exception", ctx=ast.Load()),
-                    name="e",
-                    body=[
-                        ast.Expr(
-                            value=ast.Call(
-                                func=ast.Attribute(
-                                    value=ast.Name(id="worldStateManager", ctx=ast.Load()),
-                                    attr="setFailure",
-                                    ctx=ast.Load(),
-                                ),
-                                args=[],
-                                keywords=[],
-                            )
-                        ),
-                        ast.Raise(
-                            exc=ast.Name(id="e", ctx=ast.Load()),
-                            cause=None
-                        )
-                    ]
-                )
-            ],
-            orelse=[],
-            finalbody=[]
-        )
-
-        return ast.If(
-            test=ast.Compare(
-                left=ast.Name(id="__name__", ctx=ast.Load()),
-                ops=[ast.Eq()],
-                comparators=[
-                    ast.Constant(value="__main__")
-                ],
-            ),
-            body=[
-                ast.Assign(
-                    targets=[
-                        ast.Name(id="worldStateManager", ctx=ast.Store())
-                    ],
-                    value=ast.Call(
-                        func=ast.Name(id="WorldState", ctx=ast.Load()),
-                        args=[
-                            ast.Constant(value=self.mode)
-                        ],
-                        keywords=[]
-                    )
-                ),
-                ast.Assign(
-                    targets=[
-                        ast.Name(id="nextBehavior", ctx=ast.Store())
-                    ],
-                    value=ast.Constant(value=nextBehavior),
-                ),
-                ast.Assign(
-                    targets=[
-                        ast.Name(id="worldState", ctx=ast.Store())
-                    ],
-                    value=ast.Dict(
-                        keys=[],
-                        values=[]
-                    )
-                ),
-                ast.While(
-                    test=ast.Name(id="nextBehavior", ctx=ast.Load()),
-                    body=[tryBlock],
-                    orelse=[],
-                ),
-            ],
-            orelse=[],
-        )
+        startingBehavior = node["args"][0]["value"]
+        loggingMode = self.mode
+        return getRunBlock(startingBehavior, loggingMode)
