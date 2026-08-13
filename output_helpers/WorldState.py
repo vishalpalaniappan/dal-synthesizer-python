@@ -86,6 +86,12 @@ class WorldState:
     def getUid(self, name):
         return self.worldState[name]["uid"]
 
+    def hasParticipant(self, name):
+        if name in self.worldState:
+            return True
+        else:
+            return False
+
     def update(self, name, value, type, role):
         self.worldState[name]["value"] = value
         if self.mode == "verbose":
