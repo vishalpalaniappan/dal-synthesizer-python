@@ -1,0 +1,45 @@
+design("test")
+
+actor math_man {
+    include("computable_units.py")
+    include("registered.py")
+    import("average.dal")
+
+    behavior initialize_list {
+        worldStateManager(
+            save_in=null, 
+            transformation=create, 
+            name="unsortedList",
+            value=["adsf",3,5],
+            p_type="LIST", 
+            p_role="UNSORTED_LIST", 
+            is_input=False
+        )
+        select {
+            goToBehavior(average)
+        }
+    }
+
+    behavior average {
+        runCompositeBehavior(listAverage)
+        select {
+            goToBehavior(showAverage)
+        }
+    }
+
+    behavior showAverage {
+        worldStateManager(
+            save_in=average, 
+            transformation=getValue, 
+            name="average",
+            p_type="LIST", 
+            p_role="UNSORTED_LIST"
+        )
+
+        display("f'{average}'")
+        
+    }
+
+    run(initialize_list)
+
+}
