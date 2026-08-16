@@ -56,15 +56,24 @@ class Synthesizer:
             for node in actor["body"]:
                 self.processTree(node, self.pythonAst, 0)
 
+            # Import the default files
             self.pythonAst.body.insert(0, ast.parse("from LoggingHelper import semanticLogger").body[0])
             self.pythonAst.body.insert(0, ast.parse("from WorldState import WorldState").body[0])
 
+            # Python files to include in the synthesized output
             if "includes" in actor:
                 for inc in actor["includes"]:
                     required.append(inc[0])
                     if inc[0].endswith(".py"):
                         name = os.path.splitext(inc[0])[0] 
                         self.pythonAst.body.insert(0, ast.parse(f"from {name} import *").body[0])
+
+            # Import the synthesized composite behavior
+            if "imports" in actor:
+                for inc in actor["imports"]:
+                    if inc[0].endswith(".dal"):
+                        name = os.path.splitext(inc[0])[0] 
+                        self.pythonAst.body.insert(0, ast.parse(f"from {name} import *").body[0])   
 
             synthSrc = ast.unparse(self.pythonAst)
             output[f'{actor[f"actorName"]}.py'] = synthSrc
