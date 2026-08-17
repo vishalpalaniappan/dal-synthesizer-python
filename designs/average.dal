@@ -1,33 +1,32 @@
-compositeBehavior listAverage {
-    include("computable_units.py")
-    include("registered.py")
+compositeBehavior("listAverage")
 
-    # Simplest form of a composite behavior
-    # After using this to establish the 
-    # workflow, I will expand it.
+include("computable_units.py")
+include("registered.py")
 
-    behavior runAverage {
-        worldStateManager(
-            save_in=unsortedList, 
-            transformation=getValue, 
-            name="unsortedList",
-            p_type="LIST", 
-            p_role="UNSORTED_LIST"
-        )
+# Simplest form of a composite behavior
+# After using this to establish the 
+# workflow, I will expand it.
 
-        _listAverage(avg, unsortedList)
+behavior runAverage {
+    worldStateManager(
+        save_in=unsortedList, 
+        transformation=getValue, 
+        name="unsortedList",
+        p_type="LIST", 
+        p_role="UNSORTED_LIST"
+    )
 
-        worldStateManager(
-            save_in=null, 
-            transformation=create, 
-            name="average",
-            value=avg,
-            p_type="FLOAT", 
-            p_role="LIST_AVERAGE", 
-            is_input=False
-        )
-    }
+    _listAverage(avg, unsortedList)
 
-
-    run()
+    worldStateManager(
+        save_in=null, 
+        transformation=create, 
+        name="average",
+        value=avg,
+        p_type="FLOAT", 
+        p_role="LIST_AVERAGE", 
+        is_input=False
+    )
 }
+
+run(runAverage)
