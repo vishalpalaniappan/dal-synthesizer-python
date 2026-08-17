@@ -11,7 +11,6 @@ const testStreamMode = async (pathToDesign, behavior) => {
 
     // Create an asts object with all the necessary designs to send
     // to the synthesizer (currently not connected to the synth)
-    const data = await fs.readFile(pathToDesign);
     const designFolder = path.dirname(pathToDesign);
     const filesToProcess = [path.basename(pathToDesign)]
     const asts = {};
@@ -21,7 +20,8 @@ const testStreamMode = async (pathToDesign, behavior) => {
             const compositeImport = filesToProcess.pop();
             const importPath = path.join(designFolder, compositeImport);
             const data = await fs.readFile(importPath);
-            asts[compositeImport] = new DalAstGenerator().run(data.toString());
+            const ast = new DalAstGenerator().run(data.toString());
+            asts[compositeImport] = ast;
             if (ast?.imports) {
                 for (const _import of ast?.imports) {
                     filesToProcess.push(_import[0]);
