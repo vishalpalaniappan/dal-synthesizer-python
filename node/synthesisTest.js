@@ -35,6 +35,8 @@ const testStreamMode = async (pathToDesign, behavior) => {
             }
         }
     }
+    
+    // TODO: Detect circular dependencies
 
     // Synthesize the design at the provided path
     const data = await fs.readFile(pathToDesign);
