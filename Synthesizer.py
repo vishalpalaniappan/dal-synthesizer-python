@@ -42,6 +42,8 @@ class Synthesizer:
         else:
             raise RuntimeError("Unknown ast type")
 
+        self.nodeSynthesizer.setFileType(self.type)
+
         output = {}
 
         with open(Path(__file__).parent / "output_helpers" / "LoggingHelper.py","r") as f:

@@ -4,8 +4,14 @@ from helper import getRunBlock
 
 class SynthesizeNode:
 
-    def __init__(self, mode):
+    def __init__(self, mode, ):
         self.mode = mode
+
+    def setFileType(self, type):
+        '''
+            Sets the file type (design or composite behavior)
+        '''
+        self.fileType = type
 
     def run(self, node):
         '''
