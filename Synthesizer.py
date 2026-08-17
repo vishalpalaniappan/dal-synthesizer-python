@@ -81,7 +81,8 @@ class Synthesizer:
 
         output[f'{self.name}.py'] = ast.unparse(self.pythonAst)
         output["metadata.json"] = json.dumps({
-            "designName": self.dalAst,
+            "name": self.name,
+            "type": self.type,
             "commands":[f"python3 {self.name}.py"],
             "required": required
         })
