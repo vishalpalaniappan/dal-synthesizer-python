@@ -1,0 +1,195 @@
+{
+    "type": "root",
+    "body": [
+        {
+            "type": "design",
+            "design_name": [
+                {
+                    "arg": null,
+                    "type": "string",
+                    "value": "test"
+                }
+            ]
+        },
+        {
+            "type": "actor",
+            "actorName": "math_man",
+            "body": [
+                {
+                    "type": "behavior",
+                    "behaviorName": "initialize_list",
+                    "body": [
+                        {
+                            "type": "cmd",
+                            "command": "worldStateManager",
+                            "args": [
+                                {
+                                    "arg": "save_in",
+                                    "type": "null",
+                                    "value": null
+                                },
+                                {
+                                    "arg": "transformation",
+                                    "type": "name",
+                                    "value": "create"
+                                },
+                                {
+                                    "arg": "name",
+                                    "type": "string",
+                                    "value": "unsortedList"
+                                },
+                                {
+                                    "arg": "value",
+                                    "type": "list",
+                                    "value": [
+                                        "adsf",
+                                        3,
+                                        5
+                                    ]
+                                },
+                                {
+                                    "arg": "p_type",
+                                    "type": "string",
+                                    "value": "LIST"
+                                },
+                                {
+                                    "arg": "p_role",
+                                    "type": "string",
+                                    "value": "UNSORTED_LIST"
+                                },
+                                {
+                                    "arg": "is_input",
+                                    "type": "name",
+                                    "value": "False"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "select",
+                            "args": [],
+                            "body": [
+                                {
+                                    "type": "cmd",
+                                    "command": "goToBehavior",
+                                    "args": [
+                                        {
+                                            "arg": null,
+                                            "type": "name",
+                                            "value": "average"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "behavior",
+                    "behaviorName": "average",
+                    "body": [
+                        {
+                            "type": "cmd",
+                            "command": "runCompositeBehavior",
+                            "args": [
+                                {
+                                    "arg": null,
+                                    "type": "name",
+                                    "value": "listAverage"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "select",
+                            "args": [],
+                            "body": [
+                                {
+                                    "type": "cmd",
+                                    "command": "goToBehavior",
+                                    "args": [
+                                        {
+                                            "arg": null,
+                                            "type": "name",
+                                            "value": "showAverage"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "behavior",
+                    "behaviorName": "showAverage",
+                    "body": [
+                        {
+                            "type": "cmd",
+                            "command": "worldStateManager",
+                            "args": [
+                                {
+                                    "arg": "save_in",
+                                    "type": "name",
+                                    "value": "average"
+                                },
+                                {
+                                    "arg": "transformation",
+                                    "type": "name",
+                                    "value": "getValue"
+                                },
+                                {
+                                    "arg": "name",
+                                    "type": "string",
+                                    "value": "average"
+                                },
+                                {
+                                    "arg": "p_type",
+                                    "type": "string",
+                                    "value": "LIST"
+                                },
+                                {
+                                    "arg": "p_role",
+                                    "type": "string",
+                                    "value": "UNSORTED_LIST"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "cmd",
+                            "command": "display",
+                            "args": [
+                                {
+                                    "arg": null,
+                                    "type": "string",
+                                    "value": "f'{average}'"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "run",
+                    "args": [
+                        {
+                            "arg": null,
+                            "type": "name",
+                            "value": "initialize_list"
+                        }
+                    ]
+                }
+            ],
+            "includes": [
+                [
+                    "computable_units.py"
+                ],
+                [
+                    "registered.py"
+                ]
+            ],
+            "imports": [
+                [
+                    "average.dal"
+                ]
+            ]
+        }
+    ]
+}
