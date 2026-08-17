@@ -22,10 +22,16 @@ const testStreamMode = async (pathToDesign, behavior) => {
             const data = await fs.readFile(importPath);
             const ast = new DalAstGenerator().run(data.toString());
             asts[compositeImport] = ast;
-            if (ast?.imports) {
-                for (const _import of ast?.imports) {
-                    filesToProcess.push(_import[0]);
-                }
+
+            // If the ast has imports, add it so we can process it
+            if (!ast?.imports) continue
+            for (const _import of ast?.imports) {
+                // Don't add twice
+                if (filesToProcess.includes(_import[0])) continue
+                // Don't reprocess same file
+                if (_import[0] in asts) continue
+                // Add file to be processed
+                filesToProcess.push(_import[0]);
             }
         }
     }
