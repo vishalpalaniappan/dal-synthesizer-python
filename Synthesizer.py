@@ -42,7 +42,7 @@ class Synthesizer:
         else:
             raise RuntimeError("Unknown ast type")
 
-        self.nodeSynthesizer.setFileType(self.type)
+        self.nodeSynthesizer.setFileType(self.type, self.name)
 
         output = {}
 

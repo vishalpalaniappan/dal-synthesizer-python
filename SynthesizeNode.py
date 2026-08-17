@@ -7,11 +7,16 @@ class SynthesizeNode:
     def __init__(self, mode, ):
         self.mode = mode
 
-    def setFileType(self, type):
+    def setFileType(self, type, name):
         '''
             Sets the file type (design or composite behavior)
+
+            Sets the name (used to choose the method name in
+            synthesized composite behaviors so that it can be
+            invoked from other behaviors)
         '''
         self.fileType = type
+        self.name = name
 
     def run(self, node):
         '''
