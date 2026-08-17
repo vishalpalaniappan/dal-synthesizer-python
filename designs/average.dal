@@ -1,4 +1,4 @@
-compositeBehavior("listAverage")
+compositeBehavior("average")
 
 include("computable_units.py")
 include("registered.py")
