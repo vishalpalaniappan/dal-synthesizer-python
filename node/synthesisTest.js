@@ -8,8 +8,30 @@ import {DalAstGenerator} from "dal-ast-js";
 import { copyFile, rm, mkdir } from "fs/promises";
 
 const testStreamMode = async (pathToDesign, behavior) => {    
-    const data = await fs.readFile(pathToDesign);
 
+    // Create an asts object with all the necessary designs to send
+    // to the synthesizer (currently not connected to the synth)
+    const data = await fs.readFile(pathToDesign);
+    const designFolder = path.dirname(pathToDesign);
+    const filesToProcess = [path.basename(pathToDesign)]
+    const asts = {};
+
+    while (filesToProcess.length > 0) {
+        for (const _file of filesToProcess) {
+            const compositeImport = filesToProcess.pop();
+            const importPath = path.join(designFolder, compositeImport);
+            const data = await fs.readFile(importPath);
+            asts[compositeImport] = new DalAstGenerator().run(data.toString());
+            if (ast?.imports) {
+                for (const _import of ast?.imports) {
+                    filesToProcess.push(_import[0]);
+                }
+            }
+        }
+    }
+
+    // Synthesize the design at the provided path
+    const data = await fs.readFile(pathToDesign);
     const ast = new DalAstGenerator().run(data.toString());
 
     try {
