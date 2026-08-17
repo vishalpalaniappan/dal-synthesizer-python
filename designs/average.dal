@@ -2,6 +2,7 @@ compositeBehavior("listAverage")
 
 include("computable_units.py")
 include("registered.py")
+import("compositeTest.dal")
 
 # Simplest form of a composite behavior
 # After using this to establish the 
