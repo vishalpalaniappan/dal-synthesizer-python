@@ -10,7 +10,7 @@ import shutil
 class Synthesizer:
     
     def __init__(self, dalAst, mode, stream):
-        self.dalAst = dalAst
+        self.dalAsts = dalAst
         self.stream = stream
         self.mode = mode
         self.designName = None
@@ -33,16 +33,6 @@ class Synthesizer:
             - Includes the synthesizer defined files (logging helper, world state manager)
             - Streams output or writes it to folder.
         '''
-        if self.dalAst["type"] == "design":
-            self.type = "design"
-            self.name = self.dalAst["name"][0]["value"]
-        elif self.dalAst["type"] == "compositeBehavior":
-            self.type = "compositeBehavior"
-            self.name = self.dalAst["name"][0]["value"]
-        else:
-            raise RuntimeError("Unknown ast type")
-
-        self.nodeSynthesizer.setFileType(self.type, self.name)
 
         output = {}
 
@@ -52,40 +42,60 @@ class Synthesizer:
         with open(Path(__file__).parent / "output_helpers" / "WorldState.py","r") as f:
             output["WorldState.py"] = f.read()
 
-        required = []
-        if not self.stream:
-            print("Processing Design:", self.name)
+        self.designName = None
 
-        self.pythonAst = ast.Module(body=[],type_ignores=[])
-        
-        # Process each node in the DAL ast.
-        for node in self.dalAst["body"]:
-            self.processTree(node, self.pythonAst, 0)
+        # Process each of the DAL asts
+        for fileName in self.dalAsts:
+            self.pythonAst = ast.Module(body=[],type_ignores=[])
+            dalAst = self.dalAsts[fileName]
+            if dalAst["type"] == "design":
+                self.type = "design"
+                self.name = dalAst["name"][0]["value"]
+                self.designName = dalAst["name"][0]["value"]
+            elif dalAst["type"] == "compositeBehavior":
+                self.type = "compositeBehavior"
+                self.name = dalAst["name"][0]["value"]
+            else:
+                raise RuntimeError("Unknown ast type")
 
-        # Import the default files
-        self.pythonAst.body.insert(0, ast.parse("from LoggingHelper import semanticLogger").body[0])
-        self.pythonAst.body.insert(0, ast.parse("from WorldState import WorldState").body[0])
+            self.nodeSynthesizer.setFileType(self.type, self.name)
 
-        # Python files to include in the synthesized output
-        if "includes" in self.dalAst:
-            for inc in self.dalAst["includes"]:
-                required.append(inc[0])
-                if inc[0].endswith(".py"):
-                    name = os.path.splitext(inc[0])[0] 
-                    self.pythonAst.body.insert(0, ast.parse(f"from {name} import *").body[0])
+            required = []
+            if not self.stream:
+                print("Processing Design:", self.name)
+            
+            # Process each node in the DAL ast.
+            for node in dalAst["body"]:
+                self.processTree(node, self.pythonAst, 0)
 
-        # Import the synthesized composite behavior
-        if "imports" in self.dalAst:
-            for inc in self.dalAst["imports"]:
-                if inc[0].endswith(".dal"):
-                    name = os.path.splitext(inc[0])[0] 
-                    self.pythonAst.body.insert(0, ast.parse(f"from {name} import *").body[0])   
+            # Import the default files
+            self.pythonAst.body.insert(0, ast.parse("from LoggingHelper import semanticLogger").body[0])
+            self.pythonAst.body.insert(0, ast.parse("from WorldState import WorldState").body[0])
 
-        output[f'{self.name}.py'] = ast.unparse(self.pythonAst)
+            # Python files to include in the synthesized output
+            if "includes" in dalAst:
+                for inc in dalAst["includes"]:
+                    if inc[0] not in required:
+                        required.append(inc[0])
+                    if inc[0].endswith(".py"):
+                        name = os.path.splitext(inc[0])[0] 
+                        self.pythonAst.body.insert(0, ast.parse(f"from {name} import *").body[0])
+
+            # Import the synthesized composite behavior
+            if "imports" in dalAst:
+                for inc in dalAst["imports"]:
+                    if inc[0].endswith(".dal"):
+                        name = os.path.splitext(inc[0])[0] 
+                        self.pythonAst.body.insert(0, ast.parse(f"from {name} import *").body[0])   
+
+            output[f'{self.name}.py'] = ast.unparse(self.pythonAst)
+
+        if self.designName is None:
+            raise RuntimeError("A design AST was not provided.")
+
         output["metadata.json"] = json.dumps({
-            "name": self.name,
-            "type": self.type,
-            "commands":[f"python3 {self.name}.py"],
+            "name": self.designName,
+            "commands":[f"python3 {self.designName}.py"],
             "required": required
         })
 
