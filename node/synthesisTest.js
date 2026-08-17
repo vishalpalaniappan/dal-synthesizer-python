@@ -35,7 +35,11 @@ const testStreamMode = async (pathToDesign, behavior) => {
             }
         }
     }
-    
+
+    // Write AST to file
+    const astPath = path.join(process.cwd(), "node", "ast", path.basename(pathToDesign)+".json");
+    await fs.writeFile(astPath, JSON.stringify(asts));
+
     // TODO: Detect circular dependencies
 
     // Synthesize the design at the provided path
@@ -43,7 +47,7 @@ const testStreamMode = async (pathToDesign, behavior) => {
     const ast = new DalAstGenerator().run(data.toString());
 
     try {
-        const synthesizedOutput = await synthesisRunner(JSON.stringify(ast));
+        const synthesizedOutput = await synthesisRunner(JSON.stringify(asts));
 
         const synthObj = JSON.parse(synthesizedOutput.toString());
         const synthPath = path.join(process.cwd(), "node", "output");
