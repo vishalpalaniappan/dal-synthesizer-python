@@ -1,8 +1,8 @@
-design("test")
+design("compisteTestDesign")
 
 include("computable_units.py")
 include("registered.py")
-import("average.dal")
+import("listAverageBehavior.dal")
 
 behavior initialize_list {
     worldStateManager(
@@ -20,7 +20,7 @@ behavior initialize_list {
 }
 
 behavior average {
-    runCompositeBehavior(listAverage)
+    runCompositeBehavior(listAverageBehavior)
     select {
         goToBehavior(showAverage)
     }
