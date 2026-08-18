@@ -1,0 +1,56 @@
+{
+    "set": {
+        "description": "Set the value of the target with the given keys",
+        "syntax": "set(<target>,<keys>,<value>)",
+        "synthesized": "target[<keys>] = <value>"
+    },
+    "create": {
+        "description": "Design metadata, declares participants.",
+        "syntax": "create(<name>,<type>,<role>)"
+    },
+    "log": {
+        "description": "Adds a log statement for the given participant.",
+        "syntax": "log(<behavior>, <name>, <type>, <value>)",
+        "synthesized": "semanticLogger.logParticipant(<behavior>, <name>, <type>, <value>)"
+    },
+    "insert": {
+        "description": "Inserts the value at the given index in the target with the provided keys",
+        "syntax": "insert(<target>, <keys>,  <value>, <index>)",
+        "synthesized": " <target>[<keys>].insert(<index>, <value>)"
+    },
+    "get": {
+        "description": "Get the value from the source provided the keys and save in target.",
+        "syntax": "get(<target>, <source>, <keys>)",
+        "synthesized": "<target> = <source>[<keys>]"
+    },
+    "select": {
+        "description": "Selects the next behavior to exhibit.",
+        "syntax": "select(<nextBehavior>)",
+        "synthesized": "return \"<nextBehavior>\""
+    },
+    "display": {
+        "description": "Prints the promopt to screen (prompt is an f string)",
+        "example": "display(\"f'Got book named {name} and it has first letter {firstLetter}'\")",
+        "syntax": "display(<prompt>)",
+        "synthesized": "print(\"<prompt>\")"
+    },
+    "isEqual": {
+        "description": "Checks the equality of cmp1 and cmp2 and stores result.",
+        "syntax": "isEqual(<cmp1>, <cmp2>, <result>)",
+        "synthesized": "<result> = <cmp1> == <cmp2>"
+    },
+    "getFromPos": {
+        "description": "Get the value at pos from source and saves it in target.",
+        "syntax": "getFromPos(<target>, <source>, <pos>)",
+        "synthesized": "<target> = <source>[<pos>]"
+    },
+    "removeFromPos": {
+        "description": "Removes the value at pos from source and saves it in target.",
+        "syntax": "getFromPos(<target>, <source>, <pos>)",
+        "synthesized": "<target> = <source>.pop(<pos>)"
+    },
+    "run": {
+        "description": "Synthesizes the block which runs the desig.",
+        "syntax": "See geCmdRunAst in getSynthesizedNode.py"
+    }
+}

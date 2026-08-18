@@ -1,0 +1,84 @@
+{
+    "type": "root",
+    "body": [
+        {
+            "type": "design",
+            "design_name": [
+                {
+                    "arg": null,
+                    "type": "string",
+                    "value": "lexer"
+                }
+            ]
+        },
+        {
+            "type": "actor",
+            "actorName": "daman",
+            "body": [
+                {
+                    "type": "behavior",
+                    "behaviorName": "sample",
+                    "body": [
+                        {
+                            "type": "invariant",
+                            "args": [],
+                            "body": [
+                                {
+                                    "type": "cmd",
+                                    "command": "display",
+                                    "args": [
+                                        {
+                                            "arg": null,
+                                            "type": "string",
+                                            "value": "f'test'"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "select",
+                            "args": [],
+                            "body": [
+                                {
+                                    "type": "cmd",
+                                    "command": "goToBehavior",
+                                    "args": [
+                                        {
+                                            "arg": null,
+                                            "type": "name",
+                                            "value": "test"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "behavior",
+                    "behaviorName": "sample2",
+                    "body": [
+                        {
+                            "type": "select",
+                            "args": [],
+                            "body": [
+                                {
+                                    "type": "cmd",
+                                    "command": "goToBehavior",
+                                    "args": [
+                                        {
+                                            "arg": null,
+                                            "type": "name",
+                                            "value": "test2"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

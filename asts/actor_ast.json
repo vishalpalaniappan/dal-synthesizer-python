@@ -1,0 +1,60 @@
+{
+    "type": "root",
+    "body": [
+        {
+            "type": "design",
+            "design_name": [
+                {
+                    "type": "string",
+                    "value": "asdf"
+                }
+            ]
+        },
+        {
+            "type": "actor",
+            "actorName": "receiver",
+            "body": [
+                {
+                    "type": "behavior",
+                    "behaviorName": "test",
+                    "body": []
+                },
+                {
+                    "type": "cmd",
+                    "command": "run",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "test"
+                        }
+                    ]
+                }
+            ],
+            "includes": [
+                "test.py",
+                "sample.json"
+            ]
+        },
+        {
+            "type": "actor",
+            "actorName": "processor",
+            "body": [
+                {
+                    "type": "behavior",
+                    "behaviorName": "test",
+                    "body": []
+                },
+                {
+                    "type": "cmd",
+                    "command": "run",
+                    "args": [
+                        {
+                            "type": "name",
+                            "value": "test"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,125 @@
+{
+    "type": "compositeBehavior",
+    "body": [
+        {
+            "type": "behavior",
+            "behaviorName": "runAverage",
+            "body": [
+                {
+                    "type": "cmd",
+                    "command": "worldStateManager",
+                    "args": [
+                        {
+                            "arg": "save_in",
+                            "type": "name",
+                            "value": "unsortedList"
+                        },
+                        {
+                            "arg": "transformation",
+                            "type": "name",
+                            "value": "getValue"
+                        },
+                        {
+                            "arg": "name",
+                            "type": "string",
+                            "value": "unsortedList"
+                        },
+                        {
+                            "arg": "p_type",
+                            "type": "string",
+                            "value": "LIST"
+                        },
+                        {
+                            "arg": "p_role",
+                            "type": "string",
+                            "value": "UNSORTED_LIST"
+                        }
+                    ]
+                },
+                {
+                    "type": "registeredCmd",
+                    "command": "_listAverage",
+                    "args": [
+                        {
+                            "arg": null,
+                            "type": "name",
+                            "value": "avg"
+                        },
+                        {
+                            "arg": null,
+                            "type": "name",
+                            "value": "unsortedList"
+                        }
+                    ]
+                },
+                {
+                    "type": "cmd",
+                    "command": "worldStateManager",
+                    "args": [
+                        {
+                            "arg": "save_in",
+                            "type": "null",
+                            "value": null
+                        },
+                        {
+                            "arg": "transformation",
+                            "type": "name",
+                            "value": "create"
+                        },
+                        {
+                            "arg": "name",
+                            "type": "string",
+                            "value": "average"
+                        },
+                        {
+                            "arg": "value",
+                            "type": "name",
+                            "value": "avg"
+                        },
+                        {
+                            "arg": "p_type",
+                            "type": "string",
+                            "value": "FLOAT"
+                        },
+                        {
+                            "arg": "p_role",
+                            "type": "string",
+                            "value": "LIST_AVERAGE"
+                        },
+                        {
+                            "arg": "is_input",
+                            "type": "name",
+                            "value": "False"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "cmd",
+            "command": "run",
+            "args": [
+                {
+                    "arg": null,
+                    "type": "name",
+                    "value": "runAverage"
+                }
+            ]
+        }
+    ],
+    "name": [
+        {
+            "arg": null,
+            "type": "string",
+            "value": "listAverage"
+        }
+    ],
+    "includes": [
+        [
+            "computable_units.py"
+        ],
+        [
+            "registered.py"
+        ]
+    ]
+}
