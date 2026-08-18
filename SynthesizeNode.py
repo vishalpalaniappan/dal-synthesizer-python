@@ -307,6 +307,6 @@ class SynthesizeNode:
         startingBehavior = node["args"][0]["value"]
         loggingMode = self.mode
         if self.fileType == "design":
-            return getRunBlockDesign(startingBehavior, loggingMode)
+            return getRunBlockDesign(startingBehavior)
         elif self.fileType == "compositeBehavior":
             return getRunBlockCompositeBehavior(startingBehavior, self.name)
