@@ -292,11 +292,24 @@ class SynthesizeNode:
 
     def getCmdRunAst(self, node):
         '''
-            Command: run(<startBehavior>)
+            Command: run(<startBehavior>) in design
 
             Synthesized:
 
             if __name__ == "__main__":
+                nextBehavior = <startBehavior>
+                while nextBehavior:
+                    try:
+                        nextBehavior = globals()[nextBehavior]()
+                    except Exception as e:
+                        worldStateManager.setFailure(nextBehavior)
+
+                        
+            Command: run(<startBehavior>) in compositeBehavior
+
+            Synthesized:
+
+            def <composite_behavior>():
                 nextBehavior = <startBehavior>
                 while nextBehavior:
                     try:
