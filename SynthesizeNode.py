@@ -1,6 +1,6 @@
 import ast
-from helper import getVariableNameWithKeys
-from helper import getRunBlock
+from helper import getRunBlockDesign
+from helper import getRunBlockCompositeBehavior
 
 class SynthesizeNode:
 
@@ -74,6 +74,24 @@ class SynthesizeNode:
                 targets=[ast.Name(id=node["args"][0]["value"], ctx=ast.Store())],
                 value=callNode
             )
+
+    def getCmdRunCompositeBehaviorAst(self, node):
+        '''
+            Calls the composite behavior
+
+            runCompositeBehavior(<Behavior>)
+
+            <behavior>()
+        '''
+        behavior = node["args"][0]["value"]
+        
+        return ast.Expr(
+            value=ast.Call(
+                func=ast.Name(id=behavior, ctx=ast.Load()),
+                args=[],
+                keywords=[]
+            )
+        )
             
     def getCmdWorldStateManagerAst(self, node):
         '''
@@ -288,4 +306,7 @@ class SynthesizeNode:
         '''
         startingBehavior = node["args"][0]["value"]
         loggingMode = self.mode
-        return getRunBlock(startingBehavior, loggingMode)
+        if self.fileType == "design":
+            return getRunBlockDesign(startingBehavior, loggingMode)
+        elif self.fileType == "compositeBehavior":
+            return getRunBlockCompositeBehavior(startingBehavior, self.name)

@@ -70,7 +70,7 @@ class Synthesizer:
 
             # Import the default files
             self.pythonAst.body.insert(0, ast.parse("from LoggingHelper import semanticLogger").body[0])
-            self.pythonAst.body.insert(0, ast.parse("from WorldState import WorldState").body[0])
+            self.pythonAst.body.insert(0, ast.parse("from WorldState import worldStateManager").body[0])
 
             # Python files to include in the synthesized output
             if "includes" in dalAst:
@@ -96,7 +96,8 @@ class Synthesizer:
         output["metadata.json"] = json.dumps({
             "name": self.designName,
             "commands":[f"python3 {self.designName}.py"],
-            "required": required
+            "required": required,
+            "verbosity": self.mode
         })
 
         # Stream through stdout or write to output folder

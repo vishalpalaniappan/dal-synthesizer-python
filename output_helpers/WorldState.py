@@ -1,4 +1,5 @@
 import uuid
+import json
 from LoggingHelper import semanticLogger
 
 class WorldState:
@@ -102,3 +103,8 @@ class WorldState:
         self.worldState[name]["value"] = value
         if self.mode == "verbose":
             semanticLogger.logParticipantV2("update", name, self.worldState[name]["value"])
+
+with open("metadata.json","r") as f:
+    data = f.read()
+    dataObj = json.loads(data)
+    worldStateManager = WorldState(dataObj["verbosity"])
